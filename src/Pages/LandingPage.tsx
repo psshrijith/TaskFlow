@@ -1,11 +1,9 @@
-import { FormattedMessage } from "react-intl";
+import NavBar from '../components/NavBar';
 
 const LandingPage = () => {
   return (
-    <div className="flex min-h-screen w-full bg-gradient-to-r from-black to-white">
-      <p className="flex items-center justify-center min-h-screen w-full">
-        <FormattedMessage id="landing.title" />
-      </p>
+    <div className="flex h-screen w-full bg-gradient-to-b from-black to-white">
+      <NavBar/>
     </div>
   );
 };
