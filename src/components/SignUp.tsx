@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-const Signup = ({ openForm }) => {
+interface SignupInterface{
+    openForm: boolean;
+}
+
+const Signup = ({ openForm }:SignupInterface)  => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
