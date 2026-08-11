@@ -1,6 +1,7 @@
 import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 
-const NavBar = ({setOpenForm}) => {
+const NavBar = () => {
 
     return (
         <nav className="flex w-full flex-row items-start justify-between text-white list-none border-b border-red-100 px-10">
@@ -12,11 +13,10 @@ const NavBar = ({setOpenForm}) => {
                     <ul className="flex list-none p-3 rounded-lg gap-6 items-center">
                         <li>Product</li>
                         <li>Resources</li>
-                        <button 
-                            className="px-3 py-2 bg-white text-black rounded-lg"
-                            onClick={() => setOpenForm(true)}
+                        <Link to="/signup" 
+                            className="px-3 py-2 bg-white text-black rounded-lg"  
                         >
-                        SignUp</button>
+                        Sign Up</Link>
                     </ul>
                 </div>
             

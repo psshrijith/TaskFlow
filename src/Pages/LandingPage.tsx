@@ -1,13 +1,11 @@
-import { useState } from "react";
 import NavBar from "../components/NavBar";
-import Signup from "../components/SignUp";
+
 
 const LandingPage = () => {
-    const [openForm, setOpenForm] = useState(false);
 
     return (
         <div className="min-h-screen w-full bg-linear-to-b from-black via-zinc-950 to-zinc-900 text-white">
-            <NavBar setOpenForm={setOpenForm} />
+            <NavBar />
 
             <main className="flex min-h-[calc(100vh-80px)] items-center justify-center px-6">
                 <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
@@ -30,7 +28,6 @@ const LandingPage = () => {
 
                     <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                         <button
-                            onClick={() => setOpenForm(true)}
                             className="rounded-xl bg-white px-7 py-3.5 font-semibold text-black shadow-lg transition hover:-translate-y-0.5 hover:bg-zinc-200"
                         >
                             Get started →
@@ -49,10 +46,6 @@ const LandingPage = () => {
                 </div>
             </main>
 
-            <Signup
-                openForm={openForm}
-                setOpenForm={setOpenForm}
-            />
         </div>
     );
 };
