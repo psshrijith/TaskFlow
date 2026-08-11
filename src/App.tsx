@@ -7,7 +7,7 @@ import "./index.css";
 function App() {
 
   return (
-    <div className="flex">
+    <div className="flex-1">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage/>} />

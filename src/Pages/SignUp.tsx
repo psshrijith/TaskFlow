@@ -8,11 +8,6 @@ const Signup = () => {
 
     const handleSignUp = (event) => {
         event.preventDefault();
-
-        console.log({
-            email,
-            password,
-        });
     };
 
     return (
@@ -30,7 +25,7 @@ const Signup = () => {
         <div className="min-h-screen bg-zinc-950 text-white">
             <div className="w-full min-h-screen flex">
 
-                <div className="relative hidden overflow-hidden bg-zinc-900 lg:flex flex-1">
+                <div className="relative hidden overflow-hidden bg-zinc-900 lg:flex w-1/2">
                     
                     <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
                     <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-white/5 blur-3xl" />
@@ -45,7 +40,7 @@ const Signup = () => {
                         </Link>
 
                         <div className="max-w-lg">
-                            <p className="mb-4 text-sm font-medium uppercase tracking-widest text-zinc-500">
+                            <p className="mb-4 text-sm font-medium uppercase text-zinc-500">
                                 Work smarter
                             </p>
 
@@ -92,7 +87,7 @@ const Signup = () => {
                 </div>
 
             
-                <div className="flex items-center justify-center bg-white px-6 py-12 text-zinc-900 flex-1">
+                <div className="flex items-center justify-center bg-white px-6 py-12 text-zinc-900 flex-1 min-w-0">
                     <div className="w-full max-w-md">
 
                         <Link
