@@ -89,7 +89,7 @@ const Signup = () => {
 
             
                 <div className="flex items-center justify-center bg-white px-10 py-20 text-zinc-900 flex-1 min-w-0">
-                    <div className="w-full max-w-md">
+                    <div className="w-full max-w-md flex-1 pt-40">
 
                         <Link
                             to="/"
