@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {motion} from 'motion/react';
+import { motion } from 'motion/react';
+import { FormattedMessage, useIntl } from "react-intl";
 
 const Signup = () => {
+    const intl = useIntl();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -36,24 +38,23 @@ const Signup = () => {
                             to="/"
                             className="text-2xl font-bold tracking-tight"
                         >
-                            TaskFlow
+                            <FormattedMessage id="signup.brand" />
                         </Link>
 
                         <div className="max-w-lg">
                             <p className="mb-4 text-sm font-medium uppercase text-zinc-500">
-                                Work smarter
+                                <FormattedMessage id="signup.sidebarBadge" />
                             </p>
 
                             <h1 className="text-5xl font-bold leading-tight">
-                                Turn your tasks into
+                                <FormattedMessage id="signup.sidebarTitleLine1" />
                                 <span className="block text-zinc-500">
-                                    meaningful progress.
+                                    <FormattedMessage id="signup.sidebarTitleLine2" />
                                 </span>
                             </h1>
 
                             <p className="mt-6 text-lg leading-8 text-zinc-400">
-                                Organize your work, stay focused, and keep
-                                everything moving forward with TaskFlow.
+                                <FormattedMessage id="signup.sidebarDescription" />
                             </p>
 
                             <div className="mt-8 space-y-4 text-sm text-zinc-300">
@@ -61,53 +62,53 @@ const Signup = () => {
                                     <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-black">
                                         ✓
                                     </span>
-                                    Simple task management
+                                    <FormattedMessage id="signup.benefit1" />
                                 </div>
 
                                 <div className="flex items-center gap-3">
                                     <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-black">
                                         ✓
                                     </span>
-                                    Stay organized and focused
+                                    <FormattedMessage id="signup.benefit2" />
                                 </div>
 
                                 <div className="flex items-center gap-3">
                                     <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-black">
                                         ✓
                                     </span>
-                                    Built for getting things done
+                                    <FormattedMessage id="signup.benefit3" />
                                 </div>
                             </div>
                         </div>
 
                         <p className="text-sm text-zinc-600">
-                            © 2026 TaskFlow
+                            <FormattedMessage id="signup.copyright" />
                         </p>
                     </div>
                 </div>
 
             
-                <div className="flex items-center justify-center bg-white px-6 py-12 text-zinc-900 flex-1 min-w-0">
+                <div className="flex items-center justify-center bg-white px-10 py-20 text-zinc-900 flex-1 min-w-0">
                     <div className="w-full max-w-md">
 
                         <Link
                             to="/"
                             className="mb-12 block text-center text-2xl font-bold lg:hidden"
                         >
-                            TaskFlow
+                            <FormattedMessage id="signup.brand" />
                         </Link>
 
                         <div className="mb-10">
                             <p className="mb-3 text-sm font-medium text-zinc-500">
-                                GET STARTED
+                                <FormattedMessage id="signup.formBadge" />
                             </p>
 
                             <h2 className="text-4xl font-bold tracking-tight">
-                                Create your account
+                                <FormattedMessage id="signup.formHeading" />
                             </h2>
 
                             <p className="mt-3 text-zinc-500">
-                                Start organizing your work today.
+                                <FormattedMessage id="signup.formDescription" />
                             </p>
                         </div>
 
@@ -121,7 +122,7 @@ const Signup = () => {
                                     htmlFor="email"
                                     className="mb-2 block text-sm font-medium"
                                 >
-                                    Email address
+                                    <FormattedMessage id="signup.emailLabel" />
                                 </label>
 
                                 <input
@@ -131,7 +132,8 @@ const Signup = () => {
                                     onChange={(event) =>
                                         setEmail(event.target.value)
                                     }
-                                    placeholder="you@example.com"
+                                    placeholder={intl.formatMessage({ id: "signup.emailPlaceholder" })}
+                                    aria-label={intl.formatMessage({ id: "signup.emailLabel" })}
                                     className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
                                     required
                                 />
@@ -144,11 +146,11 @@ const Signup = () => {
                                         htmlFor="password"
                                         className="text-sm font-medium"
                                     >
-                                        Password
+                                        <FormattedMessage id="signup.passwordLabel" />
                                     </label>
 
                                     <span className="text-xs text-zinc-400">
-                                        Minimum 8 characters
+                                        <FormattedMessage id="signup.passwordNote" />
                                     </span>
                                 </div>
 
@@ -171,25 +173,25 @@ const Signup = () => {
                                 type="submit"
                                 className="w-full rounded-xl bg-zinc-950 px-4 py-3.5 font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.99]"
                             >
-                                Create account
+                                <FormattedMessage id="signup.submitButton" />
                             </button>
                         </form>
 
                         <div className="my-8 flex items-center gap-4">
                             <div className="h-px flex-1 bg-zinc-200" />
                             <span className="text-xs text-zinc-400">
-                                OR
+                                <FormattedMessage id="signup.orText" />
                             </span>
                             <div className="h-px flex-1 bg-zinc-200" />
                         </div>
 
                         <p className="text-center text-sm text-zinc-500">
-                            Already have an account?{" "}
+                            <FormattedMessage id="signup.loginPrompt" />{" "}
                             <Link
                                 to="/login"
                                 className="font-semibold text-zinc-900 hover:underline"
                             >
-                                Log in
+                                <FormattedMessage id="signup.loginLink" />
                             </Link>
                         </p>
 
