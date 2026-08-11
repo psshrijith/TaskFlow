@@ -1,10 +1,8 @@
 import { useState } from "react";
 
-interface SignupInterface{
-    openForm: boolean;
-}
 
-const Signup = ({ openForm }:SignupInterface)  => {
+
+const Signup = ({ openForm, setOpenForm })  => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,12 +12,18 @@ const Signup = ({ openForm }:SignupInterface)  => {
         window.location.href = "https://www.google.com";
     };
 
+    const handleOverlay = (event) => {
+        if(event.target === event.currentTarget){
+            setOpenForm(false);
+        }
+    }
+
     if (!openForm) {
         return null;
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={handleOverlay}>
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
 
                 <div className="mb-8 text-center">
