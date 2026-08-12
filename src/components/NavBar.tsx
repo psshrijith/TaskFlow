@@ -11,12 +11,12 @@ const NavBar = () => {
 
                 <div className="flex gap-4">
                     <ul className="flex list-none p-3 rounded-lg gap-6 items-center">
-                        <li>Product</li>
-                        <li>Resources</li>
+                        <li><FormattedMessage id="navbar.product" /></li>
+                        <li><FormattedMessage id="navbar.resources" /></li>
                         <Link to="/signup" 
                             className="px-3 py-2 bg-white text-black rounded-lg"  
                         >
-                        Sign Up</Link>
+                        <FormattedMessage id="navbar.signup" /></Link>
                     </ul>
                 </div>
             
