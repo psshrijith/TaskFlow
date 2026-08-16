@@ -1,4 +1,4 @@
-import { type ReactNode, useContext, useState} from "react";
+import { type ReactNode, useState} from "react";
 import {UserContext} from "./UserContext";
 
 type UserProviderProps = {
