@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <nav className="flex w-full items-start justify-between border-b border-red-100 px-10 text-white">
-      <div className="flex gap-4">
+    <nav className="flex w-full border-b border-red-100 px-10 text-white">
+      <div className="flex gap-4 justify-between w-full">
         <p className="p-3 text-3xl text-white">
           <FormattedMessage id="landing.title" />
         </p>
