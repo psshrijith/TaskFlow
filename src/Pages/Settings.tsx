@@ -1,7 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useTheme } from "../context/ThemeContext";
 
 const Settings = () => {
+  const {theme, setTheme} = useTheme();
+
   return (
     <main className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-3xl">
@@ -33,6 +36,8 @@ const Settings = () => {
 
             <div className="relative">
               <select
+                value={theme}
+                onChange={(event) => setTheme(event.target.value as "light"| "dark" | "system")}
                 name="theme"
                 className="
                     w-32
@@ -48,7 +53,7 @@ const Settings = () => {
                     focus:ring-2
                     focus:ring-gray-200
                     "
-                >
+              >
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
                 <option value="system">System</option>
