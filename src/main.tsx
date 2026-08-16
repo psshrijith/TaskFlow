@@ -4,8 +4,8 @@ import { IntlProvider } from "react-intl";
 import enMessages from "./en.json";
 import './index.css'
 import App from './App.tsx'
-import { ThemeProvider } from './context/ThemeContext.tsx';
-import { UserProvider } from './context/UserContext.tsx';
+import { ThemeProvider } from './context/Theme/ThemeProvider.tsx';
+import { UserProvider } from './context/User/UserProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
