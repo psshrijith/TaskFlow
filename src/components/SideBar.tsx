@@ -96,7 +96,7 @@ const SideBar = () => {
         `}
       >
         {!isCollapsed && (
-          <div className="flex items-center gap-3">
+            <NavLink to="/" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-gray-950">
               <FontAwesomeIcon icon={faHouse} />
             </div>
@@ -104,7 +104,7 @@ const SideBar = () => {
             <span className="text-base font-semibold tracking-tight">
               TaskFlow
             </span>
-          </div>
+            </NavLink>
         )}
 
         <button
