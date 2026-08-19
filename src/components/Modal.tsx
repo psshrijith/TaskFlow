@@ -14,8 +14,8 @@ const statusOptions = [
 
 const priorityOptions = [
     {label: "High", value: "high"},
-    {label: "medium", value: "medium"},
-    {label: "low", value: "low"}
+    {label: "Medium", value: "medium"},
+    {label: "Low", value: "low"}
 ]
 
 const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
