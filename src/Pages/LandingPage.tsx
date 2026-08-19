@@ -1,5 +1,6 @@
 import NavBar from "../components/NavBar";
 import { FormattedMessage } from "react-intl";
+import TaskCard from "../components/TaskCard";
 
 const LandingPage = () => {
 
