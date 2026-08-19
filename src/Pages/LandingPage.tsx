@@ -1,12 +1,7 @@
-import { useContext } from "react";
 import NavBar from "../components/NavBar";
 import { FormattedMessage } from "react-intl";
-import { useTheme } from "../context/Theme/useTheme";
 
 const LandingPage = () => {
-
-    const {theme} = useTheme();
-    console.log("theme value in the landing page", theme)
 
     return (
         <div className="min-h-screen w-full bg-linear-to-b from-black via-zinc-950 to-zinc-900 text-white">
