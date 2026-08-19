@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Dropdown from "./DropDown";
-import { label } from "motion/react-client";
 
 type ModalProps = {
   isOpenModal: boolean;
+  setIsOpenModal: (isOpen: boolean) => void;
 };
 
 const statusOptions = [
@@ -18,7 +18,7 @@ const priorityOptions = [
     {label: "low", value: "low"}
 ]
 
-const Modal = ({ isOpenModal }: ModalProps) => {
+const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   if (!isOpenModal) {
     return null;
   }
@@ -41,6 +41,7 @@ const Modal = ({ isOpenModal }: ModalProps) => {
           <button
             type="button"
             className="flex h-8 w-8 items-center justify-center rounded-lg text-xl text-gray-500 transition hover:bg-gray-800 hover:text-white"
+            onClick={()=> setIsOpenModal(false)}
           >
             ×
           </button>
@@ -117,6 +118,7 @@ const Modal = ({ isOpenModal }: ModalProps) => {
           <button
             type="button"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-900 hover:text-white"
+            onClick={() => setIsOpenModal(false)}
           >
             Cancel
           </button>

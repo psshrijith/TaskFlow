@@ -26,7 +26,7 @@ const Dashboard = () => {
 
 
           <div className="flex items-center justify-center">
-                {isOpenModal && <Modal isOpenModal={isOpenModal}/>}
+                {isOpenModal && <Modal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal}/>}
            </div>
         </main>
     </div>
