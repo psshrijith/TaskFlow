@@ -20,7 +20,7 @@ const priorityOptions = [
 
 const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   const [status, setStatus] = useState("todo");
-  const [priority, setPriority] = useState("");
+  const [priority, setPriority] = useState("high");
 
   if (!isOpenModal) {
     return null;
