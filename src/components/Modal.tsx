@@ -13,14 +13,49 @@ const statusOptions = [
 ];
 
 const priorityOptions = [
-    {label: "High", value: "high"},
-    {label: "Medium", value: "medium"},
-    {label: "Low", value: "low"}
-]
+  { label: "High", value: "high" },
+  { label: "Medium", value: "medium" },
+  { label: "Low", value: "low" },
+];
 
 const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
-  const [status, setStatus] = useState("todo");
-  const [priority, setPriority] = useState("high");
+  const [taskData, setTaskData] = useState({
+    title: "",
+    description: "",
+    taskStatus: "todo",
+    priority: "high",
+    dueDate: "",
+    tags: "",
+  });
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+
+    setTaskData((previousTask) => ({
+      ...previousTask,
+      [name]: value,
+    }));
+  };
+
+  const handleCreateTask = () => {
+    const task = {
+      id: crypto.randomUUID(),
+      title: taskData.title.trim(),
+      description: taskData.description.trim(),
+      taskStatus: taskData.taskStatus,
+      priority: taskData.priority,
+      dueDate: taskData.dueDate,
+      tags: taskData.tags.split(",").map((tag) => tag.trim()),
+    };
+
+    const existingTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+    localStorage.setItem("tasks", JSON.stringify([...existingTasks, task]));
+
+    setIsOpenModal(false);
+  };
 
   if (!isOpenModal) {
     return null;
@@ -41,7 +76,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
           <button
             type="button"
             className="flex h-8 w-8 items-center justify-center rounded-lg text-xl text-gray-500 transition hover:bg-gray-800 hover:text-white"
-            onClick={()=> setIsOpenModal(false)}
+            onClick={() => setIsOpenModal(false)}
           >
             ×
           </button>
@@ -53,6 +88,9 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
             <input
               type="text"
+              name="title"
+              onChange={handleChange}
+              value={taskData.title}
               placeholder="What needs to be done?"
               className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
@@ -64,7 +102,10 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
             </label>
 
             <textarea
+              name="description"
+              onChange={handleChange}
               rows={4}
+              value={taskData.description}
               placeholder="Add some details about this task..."
               className="w-full resize-none rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
@@ -74,19 +115,29 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
             <div className="space-y-2 flex flex-col gap-0.5">
               <Dropdown
                 label="Status"
-                value={status}
+                value={taskData.taskStatus}
                 options={statusOptions}
-                onChange={setStatus}
+                onChange={(value) =>
+                  setTaskData((previousTask) => ({
+                    ...previousTask,
+                    taskStatus: value,
+                  }))
+                }
               />
             </div>
 
             <div className="space-y-2 flex flex-col gap-0.5">
               <Dropdown
                 label="Priority"
-                value={priority}
+                value={taskData.priority}
                 options={priorityOptions}
-                onChange={setPriority}
-            />
+                onChange={(value) =>
+                  setTaskData((previousTask) => ({
+                    ...previousTask,
+                    priority: value,
+                  }))
+                }
+              />
             </div>
           </div>
 
@@ -97,6 +148,9 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
             <input
               type="date"
+              name="dueDate"
+              value={taskData.dueDate}
+              onChange={handleChange}
               className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-gray-300 outline-none transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
           </div>
@@ -106,6 +160,8 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
             <input
               type="text"
+              name="tags"
+              onChange={handleChange}
               placeholder="react, typescript, frontend"
               className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
@@ -125,6 +181,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
           <button
             type="button"
+            onClick={handleCreateTask}
             className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200"
           >
             Create task
