@@ -19,12 +19,12 @@ const priorityOptions = [
 ]
 
 const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
+  const [status, setStatus] = useState("todo");
+  const [priority, setPriority] = useState("");
+
   if (!isOpenModal) {
     return null;
   }
-
-  const [status, setStatus] = useState("todo");
-  const [priority, setPriority] = useState("");
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
