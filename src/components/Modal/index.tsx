@@ -187,6 +187,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
               onChange={handleChange}
               className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-gray-300 outline-none transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
+            {errors && <p className="text-sm text-red-400">{errors.dueDate}</p>}
           </div>
 
           <div className="space-y-2 flex flex-col gap-0.5">
