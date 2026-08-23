@@ -1,5 +1,7 @@
 import { useState } from "react";
-import Dropdown from "./DropDown";
+import Dropdown from "../DropDown";
+import ModalHeader from "./ModalHeader";
+import ModalFooter from "./ModalFooter";
 
 type ModalProps = {
   isOpenModal: boolean;
@@ -27,6 +29,12 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
     dueDate: "",
     tags: "",
   });
+  
+  const [errors, setErrors] = useState({
+    title: "",
+    description : "",
+    dueDate: ""
+  });
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -39,7 +47,49 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
     }));
   };
 
+  const handleValidation = () => {
+
+    const newErrors = {
+      title: "",
+      description: "",
+      dueDate: "",
+    }
+
+    if (!taskData.title.trim()) {
+      newErrors.title = "Title is required";
+    }
+
+    if (!taskData.description.trim()) {
+      newErrors.description = "Description is required";
+    }
+
+    if (!taskData.dueDate) {
+      newErrors.dueDate = "Due date is required";
+    }
+
+    return newErrors;
+  };
+
   const handleCreateTask = () => {
+    const validationErrors = handleValidation();
+    console.log("validation erorrs", validationErrors);
+
+    if (
+    validationErrors.title ||
+    validationErrors.description ||
+    validationErrors.dueDate
+  ) {
+    setErrors(validationErrors);
+    return;
+  }
+
+    setErrors({
+      title :  "",
+      description : "",
+      dueDate: ""
+    }
+    );
+
     const task = {
       id: crypto.randomUUID(),
       title: taskData.title.trim(),
@@ -57,6 +107,13 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
     setIsOpenModal(false);
   };
 
+  const updateTaskData = (field: keyof typeof taskData, value: string) => {
+    setTaskData((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+  };
+
   if (!isOpenModal) {
     return null;
   }
@@ -64,23 +121,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
       <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-gray-800 bg-gray-950 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-gray-800 px-6 py-5">
-          <div>
-            <h2 className="text-lg font-semibold text-white">Create task</h2>
-
-            <p className="mt-1 text-sm text-gray-500">
-              Add a new task to your workspace.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-xl text-gray-500 transition hover:bg-gray-800 hover:text-white"
-            onClick={() => setIsOpenModal(false)}
-          >
-            ×
-          </button>
-        </div>
+        <ModalHeader setIsOpenModal={setIsOpenModal} />
 
         <div className="space-y-5 px-6 py-6">
           <div className="space-y-2 flex flex-col gap-0.5">
@@ -88,12 +129,14 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
             <input
               type="text"
+              required
               name="title"
               onChange={handleChange}
               value={taskData.title}
               placeholder="What needs to be done?"
               className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
+            {errors && <p className="text-sm text-red-400">{errors.title}</p>}
           </div>
 
           <div className="space-y-2 flex flex-col gap-0.5">
@@ -109,6 +152,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
               placeholder="Add some details about this task..."
               className="w-full resize-none rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
+            {errors && <p className="text-sm text-red-400">{errors.description}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -117,12 +161,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
                 label="Status"
                 value={taskData.taskStatus}
                 options={statusOptions}
-                onChange={(value) =>
-                  setTaskData((previousTask) => ({
-                    ...previousTask,
-                    taskStatus: value,
-                  }))
-                }
+                onChange={(value) => updateTaskData("taskStatus", value)}
               />
             </div>
 
@@ -131,12 +170,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
                 label="Priority"
                 value={taskData.priority}
                 options={priorityOptions}
-                onChange={(value) =>
-                  setTaskData((previousTask) => ({
-                    ...previousTask,
-                    priority: value,
-                  }))
-                }
+                onChange={(value) => updateTaskData("priority", value)}
               />
             </div>
           </div>
@@ -168,24 +202,11 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
             <p className="text-xs text-gray-600">Separate tags with commas.</p>
           </div>
-        </div>
 
-        <div className="flex items-center justify-end gap-3 border-t border-gray-800 bg-gray-950 px-6 py-4">
-          <button
-            type="button"
-            className="rounded-lg px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-900 hover:text-white"
-            onClick={() => setIsOpenModal(false)}
-          >
-            Cancel
-          </button>
-
-          <button
-            type="button"
-            onClick={handleCreateTask}
-            className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200"
-          >
-            Create task
-          </button>
+          <ModalFooter
+            handleCreateTask={handleCreateTask}
+            setIsOpenModal={setIsOpenModal}
+          />
         </div>
       </div>
     </div>
