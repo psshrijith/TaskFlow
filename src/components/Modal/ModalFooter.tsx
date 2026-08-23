@@ -1,10 +1,12 @@
 type ModalFooterProps = {
   setIsOpenModal: (isOpen: boolean) => void;
   handleCreateTask: () => void;
+  disabled: boolean;
 };
 const ModalFooter = ({
   setIsOpenModal,
   handleCreateTask,
+  disabled
 }: ModalFooterProps) => {
 
   return (
@@ -20,7 +22,8 @@ const ModalFooter = ({
       <button
         type="button"
         onClick={handleCreateTask}
-        className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200"
+        disabled={disabled}
+        className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200 disabled:bg-red-600"
       >
         Create task
       </button>

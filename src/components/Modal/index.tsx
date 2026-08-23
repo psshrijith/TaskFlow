@@ -21,6 +21,7 @@ const priorityOptions = [
 ];
 
 const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
+
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -113,6 +114,8 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
       [field]: value,
     }));
   };
+
+  const buttonDisable = !taskData.title.trim() || !taskData.description.trim();
 
   if (!isOpenModal) {
     return null;
@@ -207,6 +210,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
           <ModalFooter
             handleCreateTask={handleCreateTask}
             setIsOpenModal={setIsOpenModal}
+            disabled={buttonDisable}
           />
         </div>
       </div>
