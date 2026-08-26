@@ -27,6 +27,7 @@ const TaskCard = ({
   description,
   tags,
   status,
+  dueDate,
 }: TaskCardProps) => {
   return (
     <article className="w-full rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
@@ -46,8 +47,12 @@ const TaskCard = ({
         {description}
       </p>
 
+      <p className="mt-3 text-sm text-gray-500">
+        Due: {dueDate}
+      </p>
+
       <div className="mt-4 flex flex-wrap gap-2">
-        {(tags || []).map((tag) => (
+        {(Array.isArray(tags) ? tags : []).map((tag) => (
           <span
             key={tag}
             className="rounded-md border border-gray-700 bg-gray-800 px-2 py-1 text-xs text-gray-300"

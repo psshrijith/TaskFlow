@@ -15,6 +15,7 @@ const TaskList = ({tasks}: TaskListProps) => {
           tags={task.tags}
           status={task.taskStatus}
           priority={task.priority}
+          dueDate={task.dueDate}
         />
       ))}
     </div>

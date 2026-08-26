@@ -10,6 +10,10 @@ type ModalProps = {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 };
 
+type TaskFormData = Omit<TaskCardProps, "tags"> & {
+  tags: string;
+};
+
 const statusOptions = [
   { label: "Todo", value: "todo" },
   { label: "In Progress", value: "in-progress" },
@@ -23,13 +27,13 @@ const priorityOptions = [
 ];
 
 const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
-  const [taskData, setTaskData] = useState<TaskCardProps>({
+  const [taskData, setTaskData] = useState<TaskFormData>({
     title: "",
     description: "",
     status: "todo",
     priority: "high",
     dueDate: "",
-    tags: [],
+    tags: "",
   });
 
   const [errors, setErrors] = useState({
@@ -97,6 +101,9 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
       priority: taskData.priority,
       dueDate: taskData.dueDate,
       tags: taskData.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean),
     };
 
     setTasks((previousTasks) => {
