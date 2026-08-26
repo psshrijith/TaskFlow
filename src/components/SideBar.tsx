@@ -78,7 +78,7 @@ const SideBar = () => {
   return (
     <aside
       className={`
-        fixed left-0 top-0 z-40
+        sticky left-0 top-0 z-40
         flex h-screen flex-col
         border-r border-white/1 text-white
         shadow-2xl

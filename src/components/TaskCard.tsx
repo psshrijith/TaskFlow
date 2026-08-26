@@ -1,14 +1,4 @@
-type Priority = "HIGH" | "MEDIUM" | "LOW";
-
-type TaskStatus = "todo" | "in-progress" | "done";
-
-type TaskCardProps = {
-  title: string;
-  priority: Priority;
-  description: string;
-  tags: string[];
-  status: TaskStatus;
-};
+import type { TaskCardProps } from "../types/types";
 
 const statusConfig = {
   todo: {
@@ -26,9 +16,9 @@ const statusConfig = {
 };
 
 const priorityConfig = {
-  HIGH: "bg-red-500/10 text-red-400 border-red-500/20",
-  MEDIUM: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-  LOW: "bg-gray-500/10 text-gray-400 border-gray-500/20",
+  high: "bg-red-500/10 text-red-400 border-red-500/20",
+  medium: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  low: "bg-gray-500/10 text-gray-400 border-gray-500/20",
 };
 
 const TaskCard = ({
@@ -39,7 +29,7 @@ const TaskCard = ({
   status,
 }: TaskCardProps) => {
   return (
-    <article className="w-full max-w-sm rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
+    <article className="w-full rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
       <div className="flex items-start justify-between gap-4">
         <h2 className="text-base font-semibold text-white">{title}</h2>
 
@@ -57,7 +47,7 @@ const TaskCard = ({
       </p>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {tags.map((tag) => (
+        {(tags || []).map((tag) => (
           <span
             key={tag}
             className="rounded-md border border-gray-700 bg-gray-800 px-2 py-1 text-xs text-gray-300"

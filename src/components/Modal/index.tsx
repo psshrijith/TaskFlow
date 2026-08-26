@@ -2,10 +2,12 @@ import { useState } from "react";
 import Dropdown from "../DropDown";
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
+import type { Task, TaskCardProps } from "../../types/types";
 
 type ModalProps = {
   isOpenModal: boolean;
   setIsOpenModal: (isOpen: boolean) => void;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 };
 
 const statusOptions = [
@@ -20,21 +22,20 @@ const priorityOptions = [
   { label: "Low", value: "low" },
 ];
 
-const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
-
-  const [taskData, setTaskData] = useState({
+const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
+  const [taskData, setTaskData] = useState<TaskCardProps>({
     title: "",
     description: "",
-    taskStatus: "todo",
+    status: "todo",
     priority: "high",
     dueDate: "",
-    tags: "",
+    tags: [],
   });
-  
+
   const [errors, setErrors] = useState({
     title: "",
-    description : "",
-    dueDate: ""
+    description: "",
+    dueDate: "",
   });
 
   const handleChange = (
@@ -49,12 +50,11 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   };
 
   const handleValidation = () => {
-
     const newErrors = {
       title: "",
       description: "",
       dueDate: "",
-    }
+    };
 
     if (!taskData.title.trim()) {
       newErrors.title = "Title is required";
@@ -73,37 +73,39 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
 
   const handleCreateTask = () => {
     const validationErrors = handleValidation();
-    console.log("validation erorrs", validationErrors);
 
     if (
-    validationErrors.title ||
-    validationErrors.description ||
-    validationErrors.dueDate
-  ) {
-    setErrors(validationErrors);
-    return;
-  }
+      validationErrors.title ||
+      validationErrors.description ||
+      validationErrors.dueDate
+    ) {
+      setErrors(validationErrors);
+      return;
+    }
 
     setErrors({
-      title :  "",
-      description : "",
-      dueDate: ""
-    }
-    );
+      title: "",
+      description: "",
+      dueDate: "",
+    });
 
     const task = {
       id: crypto.randomUUID(),
       title: taskData.title.trim(),
       description: taskData.description.trim(),
-      taskStatus: taskData.taskStatus,
+      taskStatus: taskData.status,
       priority: taskData.priority,
       dueDate: taskData.dueDate,
-      tags: taskData.tags.split(",").map((tag) => tag.trim()),
+      tags: taskData.tags
     };
 
-    const existingTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+    setTasks((previousTasks) => {
+      const updatedTasks = [...previousTasks, task];
 
-    localStorage.setItem("tasks", JSON.stringify([...existingTasks, task]));
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+      return updatedTasks;
+    });
 
     setIsOpenModal(false);
   };
@@ -155,16 +157,18 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
               placeholder="Add some details about this task..."
               className="w-full resize-none rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
             />
-            {errors && <p className="text-sm text-red-400">{errors.description}</p>}
+            {errors && (
+              <p className="text-sm text-red-400">{errors.description}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2 flex flex-col gap-0.5">
               <Dropdown
                 label="Status"
-                value={taskData.taskStatus}
+                value={taskData.status}
                 options={statusOptions}
-                onChange={(value) => updateTaskData("taskStatus", value)}
+                onChange={(value) => updateTaskData("status", value)}
               />
             </div>
 
