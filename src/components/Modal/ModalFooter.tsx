@@ -23,8 +23,7 @@ const ModalFooter = ({
         type="button"
         onClick={handleCreateTask}
         disabled={disabled}
-        className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200 disabled:bg-red-600"
-      >
+        className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200 disabled:bg-gray-700 cursor-not-allowed">
         Create task
       </button>
     </div>
