@@ -16,13 +16,22 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex">
+    <div className="flex min-h-screen bg-zinc-950 text-white">
       <SideBar />
 
-      <main className="flex-1">
-        <div className="flex justify-end p-4">
+      <main className="min-h-screen flex-1 bg-[radial-gradient(circle_at_top_right,rgba(63,63,70,0.2),transparent_35%)]">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-5 sm:px-8">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-gray-500">
+              Workspace
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-white">
+              My tasks
+            </h1>
+          </div>
+
           <button
-            className="p-2 bg-black text-white rounded-md"
+            className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-950 transition hover:bg-gray-200"
             onClick={() => setIsOpenModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
