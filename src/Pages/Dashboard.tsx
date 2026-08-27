@@ -1,19 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../components/SideBar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import type {Task} from "../types/types"
 
 const Dashboard = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    setTasks(storedTasks);
-  }, []);
+  const [tasks, setTasks] = useState<Task[]>(() =>
+    JSON.parse(localStorage.getItem("tasks") || "[]"),
+  );
 
   return (
     <div className="flex min-h-screen bg-zinc-950 text-white">
