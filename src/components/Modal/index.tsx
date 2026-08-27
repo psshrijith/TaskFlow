@@ -132,7 +132,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-md">
-      <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
+      <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-zinc-950 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
         <ModalHeader setIsOpenModal={setIsOpenModal} />
 
         <div className="max-h-[calc(100vh-210px)] space-y-5 overflow-y-auto px-6 py-6 sm:px-8">

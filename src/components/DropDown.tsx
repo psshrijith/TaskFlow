@@ -51,7 +51,7 @@ const Dropdown = ({
         <div
           role="listbox"
           aria-label={label}
-          className="absolute left-0 top-full z-50 mt-2 w-full rounded-xl border border-white/10 bg-zinc-900/95 p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.4)] backdrop-blur-xl"
+          className="absolute left-0 top-full z-50 mt-2 max-h-52 w-full overflow-y-auto rounded-xl border border-white/10 bg-zinc-900/95 p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.4)] backdrop-blur-xl"
         >
           {options.map((option) => (
             <button
