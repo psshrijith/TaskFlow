@@ -57,8 +57,6 @@ const Dropdown = ({
             <button
               key={option.value}
               type="button"
-              role="option"
-              aria-selected={option.value === value}
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
