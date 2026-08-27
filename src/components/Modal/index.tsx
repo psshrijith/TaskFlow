@@ -131,13 +131,13 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-gray-800 bg-gray-950 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-md">
+      <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
         <ModalHeader setIsOpenModal={setIsOpenModal} />
 
-        <div className="space-y-5 px-6 py-6">
-          <div className="space-y-2 flex flex-col gap-0.5">
-            <label className="text-sm font-medium text-gray-200">Title</label>
+        <div className="max-h-[calc(100vh-210px)] space-y-5 overflow-y-auto px-6 py-6 sm:px-8">
+          <div className="space-y-2">
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Title</label>
 
             <input
               type="text"
@@ -146,13 +146,13 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
               onChange={handleChange}
               value={taskData.title}
               placeholder="What needs to be done?"
-              className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
+              className={`w-full rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:bg-white/[0.05] focus:ring-2 ${errors.title ? "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/10" : "border-white/10 focus:border-white/30 focus:ring-white/10"}`}
             />
-            {errors && <p className="text-sm text-red-400">{errors.title}</p>}
+            {errors.title && <p className="text-xs text-red-400">{errors.title}</p>}
           </div>
 
-          <div className="space-y-2 flex flex-col gap-0.5">
-            <label className="text-sm font-medium text-gray-200">
+          <div className="space-y-2">
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
               Description
             </label>
 
@@ -162,15 +162,15 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
               rows={4}
               value={taskData.description}
               placeholder="Add some details about this task..."
-              className="w-full resize-none rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
+              className={`w-full resize-none rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:bg-white/[0.05] focus:ring-2 ${errors.description ? "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/10" : "border-white/10 focus:border-white/30 focus:ring-white/10"}`}
             />
             {errors && (
-              <p className="text-sm text-red-400">{errors.description}</p>
+              <p className="text-xs text-red-400">{errors.description}</p>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2 flex flex-col gap-0.5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
               <Dropdown
                 label="Status"
                 value={taskData.status}
@@ -179,7 +179,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
               />
             </div>
 
-            <div className="space-y-2 flex flex-col gap-0.5">
+            <div>
               <Dropdown
                 label="Priority"
                 value={taskData.priority}
@@ -189,8 +189,8 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
             </div>
           </div>
 
-          <div className="space-y-2 flex flex-col gap-0.5">
-            <label className="text-sm font-medium text-gray-200">
+          <div className="space-y-2">
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
               Due date
             </label>
 
@@ -199,31 +199,32 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
               name="dueDate"
               value={taskData.dueDate}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-gray-300 outline-none transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
+              className={`w-full rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-gray-300 outline-none transition focus:bg-white/[0.05] focus:ring-2 ${errors.dueDate ? "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/10" : "border-white/10 focus:border-white/30 focus:ring-white/10"}`}
             />
-            {errors && <p className="text-sm text-red-400">{errors.dueDate}</p>}
+            {errors.dueDate && <p className="text-xs text-red-400">{errors.dueDate}</p>}
           </div>
 
-          <div className="space-y-2 flex flex-col gap-0.5">
-            <label className="text-sm font-medium text-gray-200">Tags</label>
+          <div className="space-y-2">
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Tags</label>
 
             <input
               type="text"
               name="tags"
               onChange={handleChange}
+              value={taskData.tags}
               placeholder="react, typescript, frontend"
-              className="w-full rounded-lg border border-gray-800 bg-gray-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-gray-600 focus:ring-1 focus:ring-gray-600"
+              className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-white/30 focus:bg-white/[0.05] focus:ring-2 focus:ring-white/10"
             />
 
-            <p className="text-xs text-gray-600">Separate tags with commas.</p>
+            <p className="text-xs text-gray-600">Separate tags with commas</p>
           </div>
-
-          <ModalFooter
-            handleCreateTask={handleCreateTask}
-            setIsOpenModal={setIsOpenModal}
-            disabled={buttonDisable}
-          />
         </div>
+
+        <ModalFooter
+          handleCreateTask={handleCreateTask}
+          setIsOpenModal={setIsOpenModal}
+          disabled={buttonDisable || !taskData.dueDate}
+        />
       </div>
     </div>
   );
