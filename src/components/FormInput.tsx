@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
+
 const FormInput = () => {
   const intl = useIntl();
 
