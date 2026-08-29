@@ -12,6 +12,11 @@ const Dashboard = () => {
     JSON.parse(localStorage.getItem("tasks") || "[]"),
   );
 
+   const handleDeleteTask = (taskId: string | number) => {
+    console.log("deelte clicked")
+    setTasks((prev) => prev.filter((tasks) => tasks.id !== taskId));
+  }
+
   return (
     <div className="flex min-h-screen bg-zinc-950 text-white">
       <SideBar />
@@ -41,7 +46,7 @@ const Dashboard = () => {
             <Modal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} setTasks={setTasks} />
           )}
         </div>
-        <TaskList tasks={tasks}/>
+        <TaskList tasks={tasks} handleDeleteTask={handleDeleteTask}/>
       </main>
     </div>
   );

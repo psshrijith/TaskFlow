@@ -24,13 +24,16 @@ const priorityConfig = {
 };
 
 const TaskCard = ({
+  id,
   title,
   priority,
   description,
   tags,
   status,
   dueDate,
+  handleDeleteTask
 }: TaskCardProps) => {
+
   return (
     <article className="flex h-65 w-[95%] max-w-94 flex-col rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
       <div className="flex items-start justify-between gap-3">
@@ -49,6 +52,7 @@ const TaskCard = ({
             className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-700 bg-gray-800 text-gray-400 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
             aria-label="Delete task"
             type="button"
+            onClick={() => handleDeleteTask(id)}
           >
             <FontAwesomeIcon icon={faTrash} className="text-xs" />
           </button>
