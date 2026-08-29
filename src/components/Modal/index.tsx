@@ -28,6 +28,7 @@ const priorityOptions = [
 
 const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
   const [taskData, setTaskData] = useState<TaskFormData>({
+    id: "",
     title: "",
     description: "",
     status: "todo",

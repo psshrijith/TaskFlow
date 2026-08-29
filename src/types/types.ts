@@ -13,7 +13,7 @@ export type Priority = "high" | "medium" | "low";
 export type TaskStatus = "todo" | "in-progress" | "done";
 
 export type TaskCardProps = {
-  id?: string | number;
+  id: string | number;
   title: string;
   priority: Priority;
   description: string;

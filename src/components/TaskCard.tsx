@@ -52,7 +52,7 @@ const TaskCard = ({
             className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-700 bg-gray-800 text-gray-400 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
             aria-label="Delete task"
             type="button"
-            onClick={() => handleDeleteTask(id)}
+            onClick={() => handleDeleteTask?.(id)}
           >
             <FontAwesomeIcon icon={faTrash} className="text-xs" />
           </button>
@@ -88,7 +88,7 @@ const TaskCard = ({
         <div className="flex items-center gap-2">
           <button
             className="text-sm text-gray-500 transition hover:text-white"
-            onClick={() => handleView(id)}
+            onClick={() => handleView?.(id)}
           >
             View →
           </button>
