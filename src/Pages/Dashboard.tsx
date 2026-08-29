@@ -13,7 +13,11 @@ const Dashboard = () => {
   );
 
    const handleDeleteTask = (taskId: string | number) => {
-    setTasks((prev) => prev.filter((tasks) => tasks.id !== taskId));
+    setTasks(prev => {
+        const updated = prev.filter(task=> task.id !== taskId);
+        localStorage.setItem("tasks", JSON.stringify(updated));
+        return updated;
+    })
   }
 
   return (
