@@ -1,4 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { TaskCardProps } from "../types/types";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const statusConfig = {
   todo: {
@@ -31,16 +33,26 @@ const TaskCard = ({
 }: TaskCardProps) => {
   return (
     <article className="flex h-65 w-[95%] max-w-94 flex-col rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-3">
         <h2 className="text-base font-semibold text-white">{title}</h2>
 
-        <span
-          className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium ${
-            priorityConfig[priority]
-          }`}
-        >
-          {priority}
-        </span>
+        <div className="flex items-center gap-2">
+          <span
+            className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium ${
+              priorityConfig[priority]
+            }`}
+          >
+            {priority}
+          </span>
+
+          <button
+            className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-700 bg-gray-800 text-gray-400 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+            aria-label="Delete task"
+            type="button"
+          >
+            <FontAwesomeIcon icon={faTrash} className="text-xs" />
+          </button>
+        </div>
       </div>
 
       <p className="mt-3 line-clamp-2 text-sm leading-6 text-gray-400">
@@ -71,9 +83,11 @@ const TaskCard = ({
           {statusConfig[status].label}
         </span>
 
-        <button className="text-sm text-gray-500 transition hover:text-white">
-          View →
-        </button>
+        <div className="flex items-center gap-2">
+          <button className="text-sm text-gray-500 transition hover:text-white">
+            View →
+          </button>
+        </div>
       </div>
     </article>
   );
