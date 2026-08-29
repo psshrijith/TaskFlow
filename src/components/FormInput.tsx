@@ -2,10 +2,8 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
-
 const FormInput = () => {
   const intl = useIntl();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
