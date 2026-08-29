@@ -18,10 +18,7 @@ const NavBar = () => {
           </li>
 
           <li>
-            <Link
-              to="/signup"
-              className="rounded-lg bg-white px-3 py-2 text-black"
-            >
+            <Link to="/signup" className="rounded-lg bg-white px-3 py-2 text-black">
               <FormattedMessage id="navbar.signup" />
             </Link>
           </li>

@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Link, NavLink } from "react-router-dom";
 
 type NavItemProps = {
@@ -22,10 +23,12 @@ const NavItem = ({
   label,
   isCollapsed,
 }: NavItemProps) => {
+  const intl = useIntl();
+
   return (
     <NavLink
       to={to}
-      title={isCollapsed ? label : undefined}
+      title={isCollapsed ? intl.formatMessage({ id: label }) : undefined}
       className={({ isActive }) =>
         `
         group relative flex items-center rounded-xl
@@ -47,7 +50,7 @@ const NavItem = ({
 
       {!isCollapsed && (
         <span className="text-sm font-medium">
-          {label}
+          <FormattedMessage id={label} />
         </span>
       )}
     </NavLink>
@@ -55,25 +58,14 @@ const NavItem = ({
 };
 
 const navItems = [
-  {
-    to: "/dashboard",
-    icon: faHouse,
-    label: "Dashboard",
-  },
-  {
-    to: "/user",
-    icon: faCircleUser,
-    label: "User",
-  },
-  {
-    to: "/settings",
-    icon: faGear,
-    label: "Settings",
-  },
+  { to: "/dashboard", icon: faHouse, label: "sidebar.dashboard" },
+  { to: "/user", icon: faCircleUser, label: "sidebar.user" },
+  { to: "/settings", icon: faGear, label: "sidebar.settings" },
 ];
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const intl = useIntl();
 
   return (
     <aside
@@ -96,15 +88,15 @@ const SideBar = () => {
         `}
       >
         {!isCollapsed && (
-            <Link to="/" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-gray-950">
               <FontAwesomeIcon icon={faHouse} />
             </div>
 
             <span className="text-base font-semibold tracking-tight">
-              TaskFlow
+              <FormattedMessage id="signup.brand" />
             </span>
-            </Link>
+          </Link>
         )}
 
         <button
@@ -122,8 +114,8 @@ const SideBar = () => {
           "
           aria-label={
             isCollapsed
-              ? "Expand sidebar"
-              : "Collapse sidebar"
+              ? intl.formatMessage({ id: "sidebar.expand" })
+              : intl.formatMessage({ id: "sidebar.collapse" })
           }
         >
           <FontAwesomeIcon icon={faBars} />
@@ -146,7 +138,7 @@ const SideBar = () => {
         <NavItem
           to="/profile"
           icon={faCircleUser}
-          label="Profile"
+          label="sidebar.profile"
           isCollapsed={isCollapsed}
         />
       </div>

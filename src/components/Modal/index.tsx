@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useIntl } from "react-intl";
 import Dropdown from "../DropDown";
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
@@ -14,19 +15,21 @@ type TaskFormData = Omit<TaskCardProps, "tags"> & {
   tags: string;
 };
 
-const statusOptions = [
-  { label: "Todo", value: "todo" },
-  { label: "In Progress", value: "in-progress" },
-  { label: "Completed", value: "done" },
-];
-
-const priorityOptions = [
-  { label: "High", value: "high" },
-  { label: "Medium", value: "medium" },
-  { label: "Low", value: "low" },
-];
-
 const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
+  const intl = useIntl();
+
+  const statusOptions = [
+    { label: intl.formatMessage({ id: "task.status.todo" }), value: "todo" },
+    { label: intl.formatMessage({ id: "task.status.inProgress" }), value: "in-progress" },
+    { label: intl.formatMessage({ id: "task.status.done" }), value: "done" },
+  ];
+
+  const priorityOptions = [
+    { label: intl.formatMessage({ id: "task.priority.high" }), value: "high" },
+    { label: intl.formatMessage({ id: "task.priority.medium" }), value: "medium" },
+    { label: intl.formatMessage({ id: "task.priority.low" }), value: "low" },
+  ];
+
   const [taskData, setTaskData] = useState<TaskFormData>({
     id: "",
     title: "",
@@ -62,15 +65,15 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
     };
 
     if (!taskData.title.trim()) {
-      newErrors.title = "Title is required";
+      newErrors.title = intl.formatMessage({ id: "task.requiredTitle" });
     }
 
     if (!taskData.description.trim()) {
-      newErrors.description = "Description is required";
+      newErrors.description = intl.formatMessage({ id: "task.requiredDescription" });
     }
 
     if (!taskData.dueDate) {
-      newErrors.dueDate = "Due date is required";
+      newErrors.dueDate = intl.formatMessage({ id: "task.requiredDueDate" });
     }
 
     return newErrors;
@@ -138,7 +141,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
 
         <div className="max-h-[calc(100vh-210px)] space-y-5 overflow-y-auto px-6 py-6 sm:px-8">
           <div className="space-y-2">
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Title</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">{intl.formatMessage({ id: "task.title" })}</label>
 
             <input
               type="text"
@@ -146,7 +149,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
               name="title"
               onChange={handleChange}
               value={taskData.title}
-              placeholder="What needs to be done?"
+              placeholder={intl.formatMessage({ id: "task.placeholderTitle" })}
               className={`w-full rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:bg-white/[0.05] focus:ring-2 ${errors.title ? "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/10" : "border-white/10 focus:border-white/30 focus:ring-white/10"}`}
             />
             {errors.title && <p className="text-xs text-red-400">{errors.title}</p>}
@@ -154,7 +157,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
 
           <div className="space-y-2">
             <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
-              Description
+              {intl.formatMessage({ id: "task.description" })}
             </label>
 
             <textarea
@@ -162,7 +165,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
               onChange={handleChange}
               rows={4}
               value={taskData.description}
-              placeholder="Add some details about this task..."
+              placeholder={intl.formatMessage({ id: "task.placeholderDescription" })}
               className={`w-full resize-none rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:bg-white/[0.05] focus:ring-2 ${errors.description ? "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/10" : "border-white/10 focus:border-white/30 focus:ring-white/10"}`}
             />
             {errors && (
@@ -173,7 +176,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
               <Dropdown
-                label="Status"
+                label={intl.formatMessage({ id: "task.status" })}
                 value={taskData.status}
                 options={statusOptions}
                 onChange={(value) => updateTaskData("status", value)}
@@ -182,7 +185,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
 
             <div>
               <Dropdown
-                label="Priority"
+                label={intl.formatMessage({ id: "task.priority" })}
                 value={taskData.priority}
                 options={priorityOptions}
                 onChange={(value) => updateTaskData("priority", value)}
@@ -192,7 +195,7 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
 
           <div className="space-y-2">
             <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
-              Due date
+              {intl.formatMessage({ id: "task.dueDate" })}
             </label>
 
             <input
@@ -206,18 +209,18 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
           </div>
 
           <div className="space-y-2">
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Tags</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">{intl.formatMessage({ id: "task.modalTags" })}</label>
 
             <input
               type="text"
               name="tags"
               onChange={handleChange}
               value={taskData.tags}
-              placeholder="react, typescript, frontend"
+              placeholder={intl.formatMessage({ id: "task.placeholderTags" })}
               className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-white/30 focus:bg-white/[0.05] focus:ring-2 focus:ring-white/10"
             />
 
-            <p className="text-xs text-gray-600">Separate tags with commas</p>
+            <p className="text-xs text-gray-600">{intl.formatMessage({ id: "task.tagHint" })}</p>
           </div>
         </div>
 

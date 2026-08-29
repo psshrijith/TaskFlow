@@ -19,12 +19,8 @@ const FormInput = () => {
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder={intl.formatMessage({
-            id: "signup.emailPlaceholder",
-          })}
-          aria-label={intl.formatMessage({
-            id: "signin.emailLabel",
-          })}
+          placeholder={intl.formatMessage({ id: "signup.emailPlaceholder" })}
+          aria-label={intl.formatMessage({ id: "signin.emailLabel" })}
           autoComplete="email"
           className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
           required
