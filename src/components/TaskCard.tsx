@@ -30,7 +30,7 @@ const TaskCard = ({
   dueDate,
 }: TaskCardProps) => {
   return (
-    <article className="w-full rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
+    <article className="flex h-[260px] w-[95%] max-w-[360px] flex-col rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
       <div className="flex items-start justify-between gap-4">
         <h2 className="text-base font-semibold text-white">{title}</h2>
 
@@ -62,7 +62,7 @@ const TaskCard = ({
         ))}
       </div>
 
-      <div className="mt-5 flex items-center justify-between border-t border-gray-800 pt-4">
+      <div className="mt-auto flex items-center justify-between border-t border-gray-800 pt-4">
         <span
           className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
             statusConfig[status].className
