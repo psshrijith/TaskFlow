@@ -42,7 +42,7 @@ const TaskDetails = () => {
 
         <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-gray-400">
           <span className="rounded-full border border-white/10 bg-zinc-900 px-2.5 py-1 text-xs text-gray-300">
-            {intl.formatMessage({ id: `task.status.${task.taskStatus}` })}
+            {intl.formatMessage({ id: `task.status.${task.taskStatus === "in-progress" ? "inProgress" : task.taskStatus}` })}
           </span>
           <span>•</span>
           <span>{intl.formatMessage({ id: `task.priority.${task.priority}` })}</span>
@@ -59,7 +59,7 @@ const TaskDetails = () => {
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-gray-500"><FormattedMessage id="task.tags" /></p>
             <div className="mt-3 flex flex-wrap gap-2">
-              {task.tags.map((tag) => (
+              {(Array.isArray(task.tags) ? task.tags : []).map((tag) => (
                 <span
                   key={tag}
                   className="rounded-md border border-white/10 bg-zinc-800 px-2 py-1 text-xs text-gray-300"
