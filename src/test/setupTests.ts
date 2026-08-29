@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
-import { TextEncoder, TextDecoder } from "util";
 
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder as typeof global.TextDecoder;
+// React Router requires TextEncoder/TextDecoder in jsdom
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { TextEncoder, TextDecoder } = require("util");
+if (!globalThis.TextEncoder) globalThis.TextEncoder = TextEncoder;
+if (!globalThis.TextDecoder) globalThis.TextDecoder = TextDecoder;
