@@ -13,7 +13,6 @@ const Dashboard = () => {
   );
 
    const handleDeleteTask = (taskId: string | number) => {
-    console.log("deelte clicked")
     setTasks((prev) => prev.filter((tasks) => tasks.id !== taskId));
   }
 
