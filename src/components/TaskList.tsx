@@ -4,8 +4,9 @@ import TaskCard from "./TaskCard";
 type TaskListProps = {
     tasks : Task[];
     handleDeleteTask : (taskId: string | number ) => void;
+    handleView: (taskId: string | number ) => void;
 }
-const TaskList = ({tasks, handleDeleteTask}: TaskListProps) => {
+const TaskList = ({tasks, handleDeleteTask, handleView}: TaskListProps) => {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-4">
@@ -20,6 +21,7 @@ const TaskList = ({tasks, handleDeleteTask}: TaskListProps) => {
           priority={task.priority}
           dueDate={task.dueDate}
           handleDeleteTask={handleDeleteTask}
+          handleView={handleView}
         />
       ))}
     </div>

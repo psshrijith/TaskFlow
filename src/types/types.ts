@@ -21,4 +21,5 @@ export type TaskCardProps = {
   status: TaskStatus;
   dueDate: string;
   handleDeleteTask: (taskId: string | number) => void;
+  handleView: (taskId: string | number) => void;
 };

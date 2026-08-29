@@ -31,9 +31,9 @@ const TaskCard = ({
   tags,
   status,
   dueDate,
-  handleDeleteTask
+  handleDeleteTask,
+  handleView,
 }: TaskCardProps) => {
-
   return (
     <article className="flex h-65 w-[95%] max-w-94 flex-col rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
       <div className="flex items-start justify-between gap-3">
@@ -63,9 +63,7 @@ const TaskCard = ({
         {description}
       </p>
 
-      <p className="mt-3 text-sm text-gray-500">
-        Due: {dueDate}
-      </p>
+      <p className="mt-3 text-sm text-gray-500">Due: {dueDate}</p>
 
       <div className="mt-4 flex flex-wrap gap-2">
         {(Array.isArray(tags) ? tags : []).map((tag) => (
@@ -88,7 +86,10 @@ const TaskCard = ({
         </span>
 
         <div className="flex items-center gap-2">
-          <button className="text-sm text-gray-500 transition hover:text-white">
+          <button
+            className="text-sm text-gray-500 transition hover:text-white"
+            onClick={() => handleView(id)}
+          >
             View →
           </button>
         </div>
