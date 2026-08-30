@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../components/SideBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,19 @@ import type { Task } from "../types/types";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [tasks, setTasks] = useState<Task[]>(() =>
     JSON.parse(localStorage.getItem("tasks") || "[]"),
   );
+
+  const filteredTasks =
+    searchValue.trim() === ""
+      ? tasks
+      : tasks.filter(
+          (item) =>
+            item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+            item.description.toLowerCase().includes(searchValue.toLowerCase()),
+        );
 
   const handleDeleteTask = (taskId: string | number) => {
     setTasks((prev) => {
@@ -20,6 +30,10 @@ const Dashboard = () => {
       localStorage.setItem("tasks", JSON.stringify(updated));
       return updated;
     });
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
   };
 
   const handleView = (taskId: string | number) => {
@@ -41,22 +55,46 @@ const Dashboard = () => {
             </h1>
           </div>
 
-          <button
-            className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-950 transition hover:bg-gray-200"
-            onClick={() => setIsOpenModal(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            Create Task
-          </button>
+          <div className="flex justify-between gap-3">
+            <button
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-950 transition hover:bg-gray-200"
+              onClick={() => setIsOpenModal(true)}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+              Create Task
+            </button>
+
+            <div className="relative">
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                type="text"
+                value={searchValue}
+                placeholder="Search tasks"
+                onChange={handleSearch}
+                className="w-full rounded-lg border border-white/20 bg-zinc-900 py-2.5 pl-10 pr-3 text-sm text-white placeholder:text-gray-400"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center justify-center">
           {isOpenModal && (
-            <Modal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} setTasks={setTasks} />
+            <Modal
+              isOpenModal={isOpenModal}
+              setIsOpenModal={setIsOpenModal}
+              setTasks={setTasks}
+            />
           )}
         </div>
 
-        <TaskList tasks={tasks} handleDeleteTask={handleDeleteTask} handleView={handleView} />
+        <TaskList
+          tasks={filteredTasks}
+          handleDeleteTask={handleDeleteTask}
+          handleView={handleView}
+        />
       </main>
     </div>
   );
