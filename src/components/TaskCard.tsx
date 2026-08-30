@@ -63,9 +63,9 @@ const TaskCard = ({
       </div>
 
       
-      <p className="mt-3 line-clamp-2 text-sm leading-6 text-gray-400">
-        {description}
-      </p>
+      <div className="mt-3 line-clamp-2 text-sm leading-6 text-gray-400">
+         <p dangerouslySetInnerHTML={{ __html: description }} />
+      </div>
 
       <p className="mt-3 text-sm text-gray-500">
         {intl.formatMessage({ id: "task.dueLabel" })} {dueDate}
