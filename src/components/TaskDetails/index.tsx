@@ -82,27 +82,29 @@ const TaskDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-8">
-      <div className="mx-auto max-w-3xl">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#27272a_0,_#09090b_42rem)] px-4 py-6 text-white sm:px-8 sm:py-10 lg:px-12">
+      <div className="mx-auto max-w-6xl">
         <button
           type="button"
           onClick={() => navigate("/dashboard")}
-          className="mb-6 text-sm text-gray-400 transition hover:text-white"
+          className="mb-6 inline-flex rounded-lg px-2 py-1 text-sm text-gray-400 transition hover:bg-white/5 hover:text-white"
         >
           <FormattedMessage id="task.back" />
         </button>
 
-        <TaskHeader
-          task={editedTask}
-          isEditing={editState.isEditing}
-          titleError={editState.titleError}
-          onTitleChange={(title) => updateDraft({ title })}
-          onEdit={startEditing}
-          onSave={saveTask}
-          onCancel={cancelEditing}
-        />
+        <section className="rounded-3xl border border-white/10 bg-zinc-900/80 p-2 shadow-2xl shadow-black/20 backdrop-blur sm:p-6">
+          <TaskHeader
+            task={editedTask}
+            isEditing={editState.isEditing}
+            titleError={editState.titleError}
+            onTitleChange={(title) => updateDraft({ title })}
+            onEdit={startEditing}
+            onSave={saveTask}
+            onCancel={cancelEditing}
+          />
+        </section>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_13rem]">
+        <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_18rem] xl:gap-8">
           <TaskContent
             task={editedTask}
             isEditing={editState.isEditing}

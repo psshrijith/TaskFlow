@@ -29,7 +29,7 @@ const EditableText = ({
         id={label}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className={`w-full rounded-lg border border-white/30 bg-zinc-900 px-3 py-2 text-white outline-none focus:border-white focus:ring-2 focus:ring-white/20 ${inputClassName}`}
+        className={`w-full rounded-lg bg-zinc-900 px-3 py-2 text-white outline-none ${inputClassName}`}
       />
     </>
   );

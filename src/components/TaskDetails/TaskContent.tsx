@@ -9,12 +9,12 @@ type TaskContentProps = {
 };
 
 const TaskContent = ({ task, isEditing, onDescriptionChange }: TaskContentProps) => (
-  <main className="space-y-6 rounded-2xl border border-white/10 bg-zinc-900 p-6">
+  <main className="min-h-80 space-y-8 rounded-3xl border border-white/10 bg-zinc-900/90 p-6 shadow-2xl shadow-black/20 sm:p-8">
     <div>
       <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
         <FormattedMessage id="task.description" />
       </p>
-      <div className="mt-3 max-w-2xl leading-7 text-gray-300">
+      <div className="mt-4 max-w-3xl leading-7 text-gray-300">
         {isEditing ? (
           <RichTextEditor value={task.description} onChange={onDescriptionChange} />
         ) : (
@@ -29,11 +29,11 @@ const TaskContent = ({ task, isEditing, onDescriptionChange }: TaskContentProps)
           <FormattedMessage id="task.tags" />
         </p>
       )}
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-2">
         {(Array.isArray(task.tags) ? task.tags : []).map((tag) => (
           <span
             key={tag}
-            className="rounded-md border border-white/10 bg-zinc-800 px-2 py-1 text-xs text-gray-300"
+            className="rounded-full border border-white/10 bg-zinc-800 px-2.5 py-1 text-xs text-gray-300"
           >
             {tag}
           </span>

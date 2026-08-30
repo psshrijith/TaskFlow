@@ -29,6 +29,7 @@
     "task.back": "← Back",
     "task.backToDashboard": "← Back to dashboard",
     "task.notFound": "Task not found",
+    "task.details": "Task details",
     "task.description": "Description",
     "task.tags": "Tags",
     "task.edit": "Edit",

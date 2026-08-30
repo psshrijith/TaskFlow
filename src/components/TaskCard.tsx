@@ -64,7 +64,7 @@ const TaskCard = ({
 
       
       <p className="mt-3 line-clamp-2 text-sm leading-6 text-gray-400">
-         <div dangerouslySetInnerHTML={{ __html: description }} />
+        {description}
       </p>
 
       <p className="mt-3 text-sm text-gray-500">
