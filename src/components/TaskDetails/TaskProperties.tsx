@@ -37,7 +37,7 @@ const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps
         <FormattedMessage id="task.details" />
       </p>
 
-      <div className="rounded-2xl bg-white/[0.03] px-3 py-4">
+      <div className="rounded-2xl bg-white/3 px-3 py-4">
         <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
           <FormattedMessage id="task.status" />
         </p>
@@ -61,7 +61,7 @@ const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps
         )}
       </div>
 
-      <div className="mt-2 rounded-2xl bg-white/[0.03] px-3 py-4">
+      <div className="mt-2 rounded-2xl bg-white/3 px-3 py-4">
         <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
           <FormattedMessage id="task.priority" />
         </p>
@@ -70,7 +70,7 @@ const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps
         </p>
       </div>
 
-      <div className="mt-2 rounded-2xl bg-white/[0.03] px-3 py-4">
+      <div className="mt-2 rounded-2xl bg-white/3 px-3 py-4">
         <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
           <FormattedMessage id="task.dueDate" />
         </p>
