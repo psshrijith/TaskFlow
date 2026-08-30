@@ -10,6 +10,10 @@ module.exports = {
     "/node_modules/(?!(react-intl|@formatjs|intl-messageformat)/)",
   ],
 
+  moduleNameMapper: {
+    "\\.(css)$": "<rootDir>/src/test/styleMock.js",
+  },
+
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
 
   testMatch: [

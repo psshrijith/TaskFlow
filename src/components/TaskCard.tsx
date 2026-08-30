@@ -40,7 +40,7 @@ const TaskCard = ({
   return (
     <article className="flex h-65 w-[95%] max-w-94 flex-col rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-sm transition hover:border-gray-700 hover:shadow-lg">
       <div className="flex items-start justify-between gap-3">
-        <h2 className="text-base font-semibold text-white">{title}</h2>
+        <h2 className="text-base font-semibold text-white truncate">{title}</h2>
 
         <div className="flex items-center gap-2">
           <span
@@ -62,8 +62,9 @@ const TaskCard = ({
         </div>
       </div>
 
+      
       <p className="mt-3 line-clamp-2 text-sm leading-6 text-gray-400">
-        {description}
+         <div dangerouslySetInnerHTML={{ __html: description }} />
       </p>
 
       <p className="mt-3 text-sm text-gray-500">
