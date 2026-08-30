@@ -1,8 +1,11 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import type { Task } from "../../types/types";
+import type { Task, TaskStatus } from "../../types/types";
+import Dropdown from '../DropDown';
 
 type TaskPropertiesProps = {
   task: Task;
+  isEditing: boolean;
+  onStatusChange: (status: TaskStatus) => void;
 };
 
 const statusClassNames = {
@@ -17,8 +20,16 @@ const priorityClassNames = {
   low: "text-sky-200",
 };
 
-const TaskProperties = ({ task }: TaskPropertiesProps) => {
+const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps) => {
   const intl = useIntl();
+  const statusOptions: { label: string; value: TaskStatus }[] = [
+    { label: intl.formatMessage({ id: "task.status.todo" }), value: "todo" },
+    {
+      label: intl.formatMessage({ id: "task.status.inProgress" }),
+      value: "in-progress",
+    },
+    { label: intl.formatMessage({ id: "task.status.done" }), value: "done" },
+  ];
 
   return (
     <aside className="h-fit rounded-3xl bg-zinc-900/90 p-3 shadow-2xl shadow-black/20 xl:sticky xl:top-8">
@@ -30,13 +41,24 @@ const TaskProperties = ({ task }: TaskPropertiesProps) => {
         <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
           <FormattedMessage id="task.status" />
         </p>
-        <span
-          className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-xs ${statusClassNames[task.taskStatus]}`}
-        >
-          {intl.formatMessage({
-            id: `task.status.${task.taskStatus === "in-progress" ? "inProgress" : task.taskStatus}`,
-          })}
-        </span>
+        {isEditing ? (
+          <div className="mt-2">
+            <Dropdown
+              label=""
+              value={task.taskStatus}
+              options={statusOptions}
+              onChange={(value) => onStatusChange(value as TaskStatus)}
+            />
+          </div>
+        ) : (
+          <span
+            className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-xs ${statusClassNames[task.taskStatus]}`}
+          >
+            {intl.formatMessage({
+              id: `task.status.${task.taskStatus === "in-progress" ? "inProgress" : task.taskStatus}`,
+            })}
+          </span>
+        )}
       </div>
 
       <div className="mt-2 rounded-2xl bg-white/[0.03] px-3 py-4">

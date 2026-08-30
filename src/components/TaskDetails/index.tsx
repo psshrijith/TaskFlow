@@ -110,7 +110,11 @@ const TaskDetails = () => {
             isEditing={editState.isEditing}
             onDescriptionChange={(description) => updateDraft({ description })}
           />
-          <TaskProperties task={task} />
+          <TaskProperties
+            task={editedTask}
+            isEditing={editState.isEditing}
+            onStatusChange={(taskStatus) => updateDraft({ taskStatus })}
+          />
         </div>
       </div>
     </div>

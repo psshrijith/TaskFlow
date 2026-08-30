@@ -26,16 +26,21 @@ const Dropdown = ({
     (option) => option.value === value
   );
 
+  const hasLabel = label.trim().length > 0;
+
   return (
-    <div className="relative flex flex-col gap-2">
-      <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
-        {label}
-      </label>
+    <div className={`relative flex flex-col ${hasLabel ? "gap-2" : "gap-0"}`}>
+      {hasLabel && (
+        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
+          {label}
+        </label>
+      )}
 
       <button
         type="button"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        {...(!hasLabel ? { "aria-label": "Select an option" } : {})}
         onClick={() => setIsOpen((previous) => !previous)}
         className={`flex w-full items-center justify-between rounded-xl border bg-white/3 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/5 focus:outline-none focus:ring-2 ${isOpen ? "border-white/30 ring-white/10" : "border-white/10 focus:border-white/30 focus:ring-white/10"}`}
       >
