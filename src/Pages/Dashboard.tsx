@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import type { Task } from "../types/types";
+import EmptyState from "../components/EmptyState";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -90,11 +91,18 @@ const Dashboard = () => {
           )}
         </div>
 
-        <TaskList
-          tasks={filteredTasks}
-          handleDeleteTask={handleDeleteTask}
-          handleView={handleView}
-        />
+        {filteredTasks.length > 0 ? (
+          <TaskList
+            tasks={filteredTasks}
+            handleDeleteTask={handleDeleteTask}
+            handleView={handleView}
+          />
+        ) : (
+          <EmptyState
+            title="No tasks yet"
+            description="Create your first task to start organizing your work."
+          />
+        )}
       </main>
     </div>
   );
