@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { ThemeContext } from "./ThemeContext";
 
@@ -12,20 +8,20 @@ type ThemeProviderProps = {
   children: ReactNode;
 };
 
-export const ThemeProvider = ({
-  children,
-}: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<Theme>("system");
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+  const [theme, setTheme] = useState<Theme>(
+    () => (localStorage.getItem("theme") as Theme) || "system",
+  );
 
   useEffect(() => {
+    localStorage.setItem("theme", theme);
     const root = document.documentElement;
 
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
         ? "dark"
         : "light";
 
