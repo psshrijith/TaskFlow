@@ -115,8 +115,6 @@ const TaskDetails = () => {
             isEditing={editState.isEditing}
             onStatusChange={(taskStatus) => updateDraft({ taskStatus })}
             onPriorityChange={(priority) => updateDraft({priority})}
-
-
           />
         </div>
       </div>
