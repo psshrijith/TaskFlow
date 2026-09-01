@@ -1,11 +1,12 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import type { Task, TaskStatus } from "../../types/types";
-import Dropdown from '../DropDown';
+import type { Priority, Task, TaskStatus } from "../../types/types";
+import Dropdown from "../DropDown";
 
 type TaskPropertiesProps = {
   task: Task;
   isEditing: boolean;
   onStatusChange: (status: TaskStatus) => void;
+  onPriorityChange: (priority: Priority) => void;
 };
 
 const statusClassNames = {
@@ -20,7 +21,12 @@ const priorityClassNames = {
   low: "text-sky-200",
 };
 
-const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps) => {
+const TaskProperties = ({
+  task,
+  isEditing,
+  onStatusChange,
+  onPriorityChange,
+}: TaskPropertiesProps) => {
   const intl = useIntl();
   const statusOptions: { label: string; value: TaskStatus }[] = [
     { label: intl.formatMessage({ id: "task.status.todo" }), value: "todo" },
@@ -29,6 +35,15 @@ const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps
       value: "in-progress",
     },
     { label: intl.formatMessage({ id: "task.status.done" }), value: "done" },
+  ];
+
+  const priorityOptions: { label: string; value: Priority }[] = [
+    { label: intl.formatMessage({ id: "task.priority.high" }), value: "high" },
+    {
+      label: intl.formatMessage({ id: "task.priority.medium" }),
+      value: "medium",
+    },
+    { label: intl.formatMessage({ id: "task.priority.low" }), value: "low" },
   ];
 
   return (
@@ -65,9 +80,22 @@ const TaskProperties = ({ task, isEditing, onStatusChange }: TaskPropertiesProps
         <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
           <FormattedMessage id="task.priority" />
         </p>
-        <p className={`mt-2 text-sm font-medium ${priorityClassNames[task.priority]}`}>
-          {intl.formatMessage({ id: `task.priority.${task.priority}` })}
-        </p>
+        {isEditing ? (
+          <div className="">
+            <Dropdown
+              label=""
+              value={task.priority}
+              options={priorityOptions}
+              onChange={(value) => onPriorityChange(value as Priority)}
+            />
+          </div>
+        ) : (
+          <p
+            className={`mt-2 text-sm font-medium ${priorityClassNames[task.priority]}`}
+          >
+            {intl.formatMessage({ id: `task.priority.${task.priority}` })}
+          </p>
+        )}
       </div>
 
       <div className="mt-2 rounded-2xl bg-white/3 px-3 py-4">

@@ -53,7 +53,7 @@ const TaskDetails = () => {
   const updateDraft = (changes: Partial<Task>) => {
     setEditState((current) => ({
       ...current,
-      draftTask: current.draftTask ? { ...current.draftTask, ...changes } : current.draftTask,
+      draftTask: current.draftTask ? {...current.draftTask, ...changes} : current.draftTask,
       titleError: "",
     }));
   };
@@ -114,6 +114,9 @@ const TaskDetails = () => {
             task={editedTask}
             isEditing={editState.isEditing}
             onStatusChange={(taskStatus) => updateDraft({ taskStatus })}
+            onPriorityChange={(priority) => updateDraft({priority})}
+
+
           />
         </div>
       </div>
