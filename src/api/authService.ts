@@ -15,7 +15,6 @@ export const authService = {
         data: { name },
       }),
     });
-
     const data = await response.json();
     if (!response.ok) throw new Error(data.error_description || data.msg || "Sign up failed");
     return data;
@@ -37,7 +36,6 @@ export const authService = {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error_description || data.msg || "Sign in failed");
     
-    // Save access token locally
     if (data.access_token) {
       localStorage.setItem("supabase_token", data.access_token);
     }
