@@ -1,9 +1,14 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-export async function fetchGraphQL<T = any>(
+type GraphQLResponse<T> = {
+  data: T;
+  errors?: Array<{ message: string }>;
+};
+
+export async function fetchGraphQL<T = unknown>(
   query: string,
-  variables: Record<string, any> = {},
+  variables: Record<string, unknown> = {},
   userToken?: string
 ): Promise<T> {
   const endpoint = `${SUPABASE_URL}/graphql/v1`;
@@ -19,10 +24,10 @@ export async function fetchGraphQL<T = any>(
     body: JSON.stringify({ query, variables }),
   });
 
-  const json = await response.json();
+  const json = (await response.json()) as GraphQLResponse<T>;
 
   if (json.errors && json.errors.length > 0) {
-    throw new Error(json.errors.map((err: { message: string }) => err.message).join("\n"));
+    throw new Error(json.errors.map((err) => err.message).join("\n"));
   }
 
   return json.data;
