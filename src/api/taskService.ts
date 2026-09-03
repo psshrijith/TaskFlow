@@ -1,6 +1,15 @@
 import { fetchGraphQL } from "../lib/graphqlClient";
 import type { Task } from "../types/types";
 
+type TaskNode = {
+  id: string;
+  title: string;
+  description: string | null;
+  status: Task["taskStatus"];
+  priority: Task["priority"];
+  due_date: string | null;
+};
+
 // GraphQL Query Documents
 const GET_TASKS_QUERY = `
   query GetTasks {
@@ -79,7 +88,7 @@ export const taskService = {
     const data = await fetchGraphQL(GET_TASKS_QUERY, {}, userToken);
     const edges = data?.tasksCollection?.edges || [];
 
-    return edges.map(({ node }: any) => ({
+    return edges.map(({ node }: { node: TaskNode }) => ({
       id: node.id,
       title: node.title,
       description: node.description || "",
@@ -133,7 +142,7 @@ export const taskService = {
   },
 
   async updateTask(id: string, changes: Partial<Task>, userToken?: string): Promise<Task> {
-    const setPayload: Record<string, any> = {};
+    const setPayload: Record<string, unknown> = {};
     if (changes.title !== undefined) setPayload.title = changes.title;
     if (changes.description !== undefined) setPayload.description = changes.description;
     if (changes.taskStatus !== undefined) setPayload.status = changes.taskStatus;
