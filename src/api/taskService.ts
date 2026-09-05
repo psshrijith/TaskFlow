@@ -1,84 +1,63 @@
 import { fetchGraphQL } from "../lib/graphqlClient";
 import type { Task } from "../types/types";
 
-type TaskNode = {
-  id: string;
-  title: string;
-  description: string | null;
-  status: Task["taskStatus"];
-  priority: Task["priority"];
-  due_date: string | null;
-};
-
-// GraphQL Query Documents
+// Hasura Queries
 const GET_TASKS_QUERY = `
   query GetTasks {
-    tasksCollection(orderBy: [{ created_at: DescNullsLast }]) {
-      edges {
-        node {
-          id
-          title
-          description
-          status
-          priority
-          due_date
-        }
-      }
+    tasks(order_by: { created_at: desc }) {
+      id
+      title
+      description
+      status
+      priority
+      due_date
     }
   }
 `;
 
 const GET_TASK_BY_ID_QUERY = `
-  query GetTaskById($id: UUID!) {
-    tasksCollection(filter: { id: { eq: $id } }) {
-      edges {
-        node {
-          id
-          title
-          description
-          status
-          priority
-          due_date
-        }
-      }
+  query GetTaskById($id: uuid!) {
+    tasks_by_pk(id: $id) {
+      id
+      title
+      description
+      status
+      priority
+      due_date
     }
   }
 `;
 
 const CREATE_TASK_MUTATION = `
-  mutation CreateTask($objects: [tasksInsertInput!]!) {
-    insertIntoTasksCollection(objects: $objects) {
-      records {
-        id
-        title
-        description
-        status
-        priority
-        due_date
-      }
+  mutation CreateTask($object: tasks_insert_input!) {
+    insert_tasks_one(object: $object) {
+      id
+      title
+      description
+      status
+      priority
+      due_date
     }
   }
 `;
 
 const UPDATE_TASK_MUTATION = `
-  mutation UpdateTask($set: tasksUpdateInput!, $id: UUID!) {
-    updateTasksCollection(set: $set, filter: { id: { eq: $id } }) {
-      records {
-        id
-        title
-        description
-        status
-        priority
-        due_date
-      }
+  mutation UpdateTask($id: uuid!, $set: tasks_set_input!) {
+    update_tasks_by_pk(pk_columns: { id: $id }, _set: $set) {
+      id
+      title
+      description
+      status
+      priority
+      due_date
     }
   }
 `;
 
 const DELETE_TASK_MUTATION = `
-  mutation DeleteTask($id: UUID!) {
-    deleteFromTasksCollection(filter: { id: { eq: $id } }) {
-      affectedCount
+  mutation DeleteTask($id: uuid!) {
+    delete_tasks_by_pk(id: $id) {
+      id
     }
   }
 `;
@@ -86,80 +65,75 @@ const DELETE_TASK_MUTATION = `
 export const taskService = {
   async getTasks(userToken?: string): Promise<Task[]> {
     const data = await fetchGraphQL(GET_TASKS_QUERY, {}, userToken);
-    const edges = data?.tasksCollection?.edges || [];
+    const rows = data?.tasks || [];
 
-    return edges.map(({ node }: { node: TaskNode }) => ({
-      id: node.id,
-      title: node.title,
-      description: node.description || "",
-      taskStatus: node.status,
-      priority: node.priority,
-      dueDate: node.due_date || "",
+    return rows.map((row: any) => ({
+      id: row.id,
+      title: row.title,
+      description: row.description || "",
+      taskStatus: row.status,
+      priority: row.priority,
+      dueDate: row.due_date || "",
     }));
   },
 
   async getTaskById(id: string, userToken?: string): Promise<Task | null> {
     const data = await fetchGraphQL(GET_TASK_BY_ID_QUERY, { id }, userToken);
-    const edges = data?.tasksCollection?.edges || [];
+    const row = data?.tasks_by_pk;
+    if (!row) return null;
 
-    if (edges.length === 0) return null;
-
-    const node = edges[0].node;
     return {
-      id: node.id,
-      title: node.title,
-      description: node.description || "",
-      taskStatus: node.status,
-      priority: node.priority,
-      dueDate: node.due_date || "",
+      id: row.id,
+      title: row.title,
+      description: row.description || "",
+      taskStatus: row.status,
+      priority: row.priority,
+      dueDate: row.due_date || "",
     };
   },
 
-  async createTask(task: Omit<Task, "id">, userToken?: string): Promise<Task> {
-    const variables = {
-      objects: [
-        {
-          title: task.title,
-          description: task.description,
-          status: task.taskStatus,
-          priority: task.priority,
-          due_date: task.dueDate,
-        },
-      ],
+  async createTask(task: Omit<Task, "id">, userId: string, userToken?: string): Promise<Task> {
+    const object = {
+      user_id: userId,
+      title: task.title,
+      description: task.description,
+      status: task.taskStatus,
+      priority: task.priority,
+      due_date: task.dueDate,
     };
 
-    const data = await fetchGraphQL(CREATE_TASK_MUTATION, variables, userToken);
-    const record = data?.insertIntoTasksCollection?.records[0];
+    const data = await fetchGraphQL(CREATE_TASK_MUTATION, { object }, userToken);
+    const row = data?.insert_tasks_one;
 
     return {
-      id: record.id,
-      title: record.title,
-      description: record.description || "",
-      taskStatus: record.status,
-      priority: record.priority,
-      dueDate: record.due_date || "",
+      id: row.id,
+      title: row.title,
+      description: row.description || "",
+      taskStatus: row.status,
+      priority: row.priority,
+      dueDate: row.due_date || "",
     };
   },
 
   async updateTask(id: string, changes: Partial<Task>, userToken?: string): Promise<Task> {
-    const setPayload: Record<string, unknown> = {};
-    if (changes.title !== undefined) setPayload.title = changes.title;
-    if (changes.description !== undefined) setPayload.description = changes.description;
-    if (changes.taskStatus !== undefined) setPayload.status = changes.taskStatus;
-    if (changes.priority !== undefined) setPayload.priority = changes.priority;
-    if (changes.dueDate !== undefined) setPayload.due_date = changes.dueDate;
-    setPayload.updated_at = new Date().toISOString();
+    const set: Record<string, any> = {};
+    if (changes.title !== undefined) set.title = changes.title;
+    if (changes.description !== undefined) set.description = changes.description;
+    if (changes.taskStatus !== undefined) set.status = changes.taskStatus;
+    if (changes.priority !== undefined) set.priority = changes.priority;
+    if (changes.dueDate !== undefined) set.due_date = changes.dueDate;
+    set.updated_at = new Date().toISOString();
 
-    const data = await fetchGraphQL(UPDATE_TASK_MUTATION, { set: setPayload, id }, userToken);
-    const record = data?.updateTasksCollection?.records[0];
+    const data = await fetchGraphQL(UPDATE_TASK_MUTATION, { id, set }, userToken);
+    const row = data?.update_tasks_by_pk;
 
     return {
-      id: record.id,
-      title: record.title,
-      description: record.description || "",
-      taskStatus: record.status,
-      priority: record.priority,
-      dueDate: record.due_date || "",
+      id: row.id,
+      title: row.title,
+      description: row.description || "",
+      taskStatus: row.status,
+      priority: row.priority,
+      dueDate: row.due_date || "",
     };
   },
 
