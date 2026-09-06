@@ -18,7 +18,7 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        signupRequest: (state, _action: PayloadAction<{email: string, password: string, name: string}>) => {
+        signupRequest: (state) => {
             state.isLoading = true;
             state.error = null;
         },
@@ -34,4 +34,4 @@ const authSlice = createSlice({
 
 export const {signupRequest, signupSuccess, signupFailure} = authSlice.actions;
 
-export default authSlice.actions;
+export default authSlice.reducer;
