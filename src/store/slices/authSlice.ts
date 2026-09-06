@@ -1,7 +1,13 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+export interface UserProfile {
+  id: string;
+  email: string;
+  name?: string;
+}
+
 interface AuthState {
-  user: any | null;
+  user: UserProfile | null;
   token: string | null;
   isLoading: boolean;
   error: string | null;
@@ -15,23 +21,27 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {
-        signupRequest: (state) => {
-            state.isLoading = true;
-            state.error = null;
-        },
-        signupSuccess: (state) => {
-            state.isLoading = false;
-        },
-        signupFailure: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        }
-    }
-})
+  name: "auth",
+  initialState,
+  reducers: {
+    signupRequest: (
+      state,
+      action: PayloadAction<{ email: string; password: string }>
+    ) => {
+      void action;
+      state.isLoading = true;
+      state.error = null;
+    },
+    signupSuccess: (state) => {
+      state.isLoading = false;
+    },
+    signupFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+  },
+});
 
-export const {signupRequest, signupSuccess, signupFailure} = authSlice.actions;
+export const { signupRequest, signupSuccess, signupFailure } = authSlice.actions;
 
 export default authSlice.reducer;
