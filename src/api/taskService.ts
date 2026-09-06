@@ -1,7 +1,15 @@
 import { fetchGraphQL } from "../lib/graphqlClient";
 import type { Task } from "../types/types";
 
-// Hasura Queries
+interface TaskRow {
+  id: string;
+  title: string;
+  description?: string;
+  status: Task["taskStatus"];
+  priority: Task["priority"];
+  due_date?: string;
+}
+
 const GET_TASKS_QUERY = `
   query GetTasks {
     tasks(order_by: { created_at: desc }) {
@@ -65,9 +73,9 @@ const DELETE_TASK_MUTATION = `
 export const taskService = {
   async getTasks(userToken?: string): Promise<Task[]> {
     const data = await fetchGraphQL(GET_TASKS_QUERY, {}, userToken);
-    const rows = data?.tasks || [];
+    const rows: TaskRow[] = data?.tasks || [];
 
-    return rows.map((row: any) => ({
+    return rows.map((row: TaskRow) => ({
       id: row.id,
       title: row.title,
       description: row.description || "",
@@ -79,7 +87,7 @@ export const taskService = {
 
   async getTaskById(id: string, userToken?: string): Promise<Task | null> {
     const data = await fetchGraphQL(GET_TASK_BY_ID_QUERY, { id }, userToken);
-    const row = data?.tasks_by_pk;
+    const row: TaskRow | undefined = data?.tasks_by_pk;
     if (!row) return null;
 
     return {
@@ -103,7 +111,7 @@ export const taskService = {
     };
 
     const data = await fetchGraphQL(CREATE_TASK_MUTATION, { object }, userToken);
-    const row = data?.insert_tasks_one;
+    const row: TaskRow = data?.insert_tasks_one;
 
     return {
       id: row.id,
@@ -116,7 +124,7 @@ export const taskService = {
   },
 
   async updateTask(id: string, changes: Partial<Task>, userToken?: string): Promise<Task> {
-    const set: Record<string, any> = {};
+    const set: Record<string, unknown> = {};
     if (changes.title !== undefined) set.title = changes.title;
     if (changes.description !== undefined) set.description = changes.description;
     if (changes.taskStatus !== undefined) set.status = changes.taskStatus;
@@ -125,7 +133,7 @@ export const taskService = {
     set.updated_at = new Date().toISOString();
 
     const data = await fetchGraphQL(UPDATE_TASK_MUTATION, { id, set }, userToken);
-    const row = data?.update_tasks_by_pk;
+    const row: TaskRow = data?.update_tasks_by_pk;
 
     return {
       id: row.id,
