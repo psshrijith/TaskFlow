@@ -8,6 +8,7 @@ interface TaskRow {
   status: Task["taskStatus"];
   priority: Task["priority"];
   due_date?: string;
+  tags?: string[];
 }
 
 const GET_TASKS_QUERY = `
@@ -72,8 +73,8 @@ const DELETE_TASK_MUTATION = `
 
 export const taskService = {
   async getTasks(userToken?: string): Promise<Task[]> {
-    const data = await fetchGraphQL(GET_TASKS_QUERY, {}, userToken);
-    const rows: TaskRow[] = data?.tasks || [];
+    const data = await fetchGraphQL<{ tasks?: TaskRow[] }>(GET_TASKS_QUERY, {}, userToken);
+    const rows = data?.tasks || [];
 
     return rows.map((row: TaskRow) => ({
       id: row.id,
@@ -82,12 +83,13 @@ export const taskService = {
       taskStatus: row.status,
       priority: row.priority,
       dueDate: row.due_date || "",
+      tags: row.tags || [],
     }));
   },
 
   async getTaskById(id: string, userToken?: string): Promise<Task | null> {
-    const data = await fetchGraphQL(GET_TASK_BY_ID_QUERY, { id }, userToken);
-    const row: TaskRow | undefined = data?.tasks_by_pk;
+    const data = await fetchGraphQL<{ tasks_by_pk?: TaskRow }>(GET_TASK_BY_ID_QUERY, { id }, userToken);
+    const row = data?.tasks_by_pk;
     if (!row) return null;
 
     return {
@@ -97,6 +99,7 @@ export const taskService = {
       taskStatus: row.status,
       priority: row.priority,
       dueDate: row.due_date || "",
+      tags: row.tags || [],
     };
   },
 
@@ -110,8 +113,9 @@ export const taskService = {
       due_date: task.dueDate,
     };
 
-    const data = await fetchGraphQL(CREATE_TASK_MUTATION, { object }, userToken);
-    const row: TaskRow = data?.insert_tasks_one;
+    const data = await fetchGraphQL<{ insert_tasks_one?: TaskRow }>(CREATE_TASK_MUTATION, { object }, userToken);
+    const row = data?.insert_tasks_one;
+    if (!row) throw new Error("Failed to create task");
 
     return {
       id: row.id,
@@ -120,6 +124,7 @@ export const taskService = {
       taskStatus: row.status,
       priority: row.priority,
       dueDate: row.due_date || "",
+      tags: row.tags || [],
     };
   },
 
@@ -132,8 +137,9 @@ export const taskService = {
     if (changes.dueDate !== undefined) set.due_date = changes.dueDate;
     set.updated_at = new Date().toISOString();
 
-    const data = await fetchGraphQL(UPDATE_TASK_MUTATION, { id, set }, userToken);
-    const row: TaskRow = data?.update_tasks_by_pk;
+    const data = await fetchGraphQL<{ update_tasks_by_pk?: TaskRow }>(UPDATE_TASK_MUTATION, { id, set }, userToken);
+    const row = data?.update_tasks_by_pk;
+    if (!row) throw new Error("Failed to update task");
 
     return {
       id: row.id,
@@ -142,10 +148,11 @@ export const taskService = {
       taskStatus: row.status,
       priority: row.priority,
       dueDate: row.due_date || "",
+      tags: row.tags || [],
     };
   },
 
   async deleteTask(id: string, userToken?: string): Promise<void> {
-    await fetchGraphQL(DELETE_TASK_MUTATION, { id }, userToken);
+    await fetchGraphQL<{ delete_tasks_by_pk?: { id: string } }>(DELETE_TASK_MUTATION, { id }, userToken);
   },
 };
