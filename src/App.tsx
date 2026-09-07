@@ -8,6 +8,7 @@ import TaskDetails from "./components/TaskDetails";
 import User from "./Pages/User";
 import Profile from "./Pages/Profile";
 import "./index.css";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
@@ -17,11 +18,14 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Signin />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/task/:taskId" element={<TaskDetails />} />
-          <Route path="/user" element={<User/>} />
-          <Route path="/profile" element={<Profile/>} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/task/:taskId" element={<TaskDetails />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

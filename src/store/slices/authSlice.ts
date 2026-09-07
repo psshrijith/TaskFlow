@@ -40,9 +40,12 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    logout: (state) => {
+      state.token = null;
+    }
   },
 });
 
-export const { signupRequest, signupSuccess, signupFailure } = authSlice.actions;
+export const { signupRequest, signupSuccess, signupFailure, logout } = authSlice.actions;
 
 export default authSlice.reducer;

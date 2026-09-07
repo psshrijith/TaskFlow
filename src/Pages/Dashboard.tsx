@@ -7,9 +7,12 @@ import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import type { Task } from "../types/types";
 import EmptyState from "../components/EmptyState";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/slices/authSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [tasks, setTasks] = useState<Task[]>(() =>
@@ -41,9 +44,14 @@ const Dashboard = () => {
     navigate(`/task/${taskId}`);
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/signup');
+  };
+
   return (
     <div className="flex min-h-screen bg-zinc-950 text-white">
-      <SideBar />
+      <SideBar handleLogout={handleLogout} />
 
       <main className="min-h-screen flex-1 bg-[radial-gradient(circle_at_top_right,rgba(63,63,70,0.2),transparent_35%)]">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-5 sm:px-8">

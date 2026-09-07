@@ -1,5 +1,6 @@
 import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import {
+  faArrowRightFromBracket,
   faBars,
   faCircleUser,
   faGear,
@@ -17,12 +18,11 @@ type NavItemProps = {
   isCollapsed: boolean;
 };
 
-const NavItem = ({
-  to,
-  icon,
-  label,
-  isCollapsed,
-}: NavItemProps) => {
+type SideBarProps = {
+  handleLogout?: () => void;
+};
+
+const NavItem = ({ to, icon, label, isCollapsed }: NavItemProps) => {
   const intl = useIntl();
 
   return (
@@ -63,7 +63,7 @@ const navItems = [
   { to: "/settings", icon: faGear, label: "sidebar.settings" },
 ];
 
-const SideBar = () => {
+const SideBar = ({ handleLogout }: SideBarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const intl = useIntl();
 
@@ -134,13 +134,20 @@ const SideBar = () => {
         ))}
       </nav>
 
-      <div className="border-t border-white/10 p-2">
-        <NavItem
-          to="/profile"
-          icon={faCircleUser}
-          label="sidebar.profile"
-          isCollapsed={isCollapsed}
-        />
+      <div className="border-t border-white/10 p-4">
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center
+              justify-center gap-3
+              rounded-lg px-4 py-3
+              text-sm font-medium text-gray-300
+              transition-all duration-200
+              hover:bg-red-500/10
+              hover:text-red-400"
+        >
+          <FontAwesomeIcon icon={faArrowRightFromBracket} className="text-lg" />
+          {!isCollapsed && <span>Logout</span>}
+        </button>
       </div>
     </aside>
   );
