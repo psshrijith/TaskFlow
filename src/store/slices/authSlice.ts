@@ -32,8 +32,9 @@ const authSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    signupSuccess: (state) => {
+    signupSuccess: (state, action: PayloadAction<{accessToken: string}>) => {
       state.isLoading = false;
+      state.token = action.payload.accessToken;
     },
     signupFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;

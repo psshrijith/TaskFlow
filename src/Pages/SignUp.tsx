@@ -1,23 +1,32 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { signupRequest } from "../store/slices/authSlice";
+import { signupRequest, signupSuccess } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 
 const Signup = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector(signupSuccess);
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const handleSignUp = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(signupRequest({ email, password }));
   };
+
+  useEffect(() => {
+    if(token){
+      navigate("/dashboard")
+    }
+  },[navigate, token])
 
   return (
     <motion.div
