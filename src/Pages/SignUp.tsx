@@ -10,8 +10,7 @@ const Signup = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector(signupSuccess);
-  const { isLoading, error } = useSelector((state: RootState) => state.auth);
+  const { isLoading, error, token } = useSelector((state: RootState) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
