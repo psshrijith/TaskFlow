@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { signupRequest, signupSuccess } from "../store/slices/authSlice";
+import { signupRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 
 const Signup = () => {
