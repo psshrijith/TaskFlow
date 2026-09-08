@@ -17,6 +17,13 @@ export const authService = {
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error_description || data.msg || "Sign up failed");
+    
+    if (data.access_token) {
+      localStorage.setItem("supabase_token", data.access_token);
+    } else if (data.session?.access_token) {
+      localStorage.setItem("supabase_token", data.session.access_token);
+    }
+
     return data;
   },
 
