@@ -48,7 +48,6 @@ const Dashboard = () => {
     dispatch(logout());
     localStorage.removeItem("access_token");
     navigate('/signup');
-    console.log("logoing put")
   };
 
   return (
