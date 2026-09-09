@@ -23,7 +23,6 @@ export const authService = {
     } else if (data.session?.access_token) {
       localStorage.setItem("supabase_token", data.session.access_token);
     }
-
     return data;
   },
 
