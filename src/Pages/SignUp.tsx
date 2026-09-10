@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { signupRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
+import validatePassword from "../utils/validatePassword";
 
 const Signup = () => {
   const intl = useIntl();
@@ -14,14 +15,21 @@ const Signup = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleSignUp = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setPasswordError(passwordError);
+      return;
+    }
     dispatch(signupRequest({ email, password }));
   };
 
   useEffect(() => {
-    if(token){
+    if (token) {
       navigate("/dashboard")
     }
   }, [token, navigate]);
@@ -116,9 +124,9 @@ const Signup = () => {
                 </p>
               </div>
 
-              {error && (
+              {(error || passwordError) && (
                 <div className="mb-6 rounded-xl bg-red-50 p-4 text-sm text-red-600 border border-red-200">
-                  {error}
+                  {error || passwordError}
                 </div>
               )}
 
