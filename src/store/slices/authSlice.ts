@@ -26,13 +26,13 @@ const authSlice = createSlice({
   reducers: {
     signupRequest: (
       state,
-      action: PayloadAction<{ email: string; password: string }>
+      action: PayloadAction<{ email: string; password: string }>,
     ) => {
       void action;
       state.isLoading = true;
       state.error = null;
     },
-    signupSuccess: (state, action: PayloadAction<{accessToken: string}>) => {
+    signupSuccess: (state, action: PayloadAction<{ accessToken: string }>) => {
       state.isLoading = false;
       state.token = action.payload.accessToken;
     },
@@ -42,10 +42,26 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.token = null;
-    }
+    },
+    signinRequest: (
+      state,
+      _action: PayloadAction<{ email: String; password: string }>,
+    ) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    signinSuccess: (state, action: PayloadAction<{ accessToken: string }>) => {
+      state.isLoading = false;
+      state.token = action.payload.accessToken;
+    },
+    signinFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { signupRequest, signupSuccess, signupFailure, logout } = authSlice.actions;
+export const { signupRequest, signupSuccess, signupFailure, logout, signinRequest, signinSuccess, signinFailure } =
+  authSlice.actions;
 
 export default authSlice.reducer;

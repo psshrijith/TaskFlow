@@ -3,14 +3,17 @@ import { motion } from "motion/react";
 import { FormattedMessage } from "react-intl";
 import FormInput from "../components/FormInput";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signinRequest } from "../store/slices/authSlice";
 
 const Signin = () => {
-
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    dispatch(signinRequest({ email, password }));
   };
 
   return (
@@ -94,7 +97,12 @@ const Signin = () => {
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
-              <FormInput email = {email} password={password} setEmail={setEmail} setPassword={setPassword}/>
+              <FormInput
+                email={email}
+                password={password}
+                setEmail={setEmail}
+                setPassword={setPassword}
+              />
 
               <button
                 type="submit"
