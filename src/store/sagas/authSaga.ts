@@ -6,6 +6,11 @@ import { signupRequest, signupFailure, signupSuccess } from "../slices/authSlice
 interface SignupResponse{
   access_token: string;
 }
+
+interface SignInResponse{
+  access_token: string;
+}
+
 function* handleSignup(
   action: PayloadAction<{ email: string; password: string }>
 ): Generator<unknown, void, SignupResponse> {
@@ -19,6 +24,20 @@ function* handleSignup(
     const errorMessage = err instanceof Error ? err.message : "Signup Failed";
     yield put(signupFailure(errorMessage));
   }
+}
+
+function* handleSignIn(action: PayloadAction<{email: string, password: string }> ): Generator <unknown, void, SignInResponse>  {
+  try{
+    const {email, password} = action.payload;
+    const response = yield call(authService.signIn, email, password);
+    const token = response?.access_token;
+
+    console.log("signin token", token);
+  }
+  catch(err: unknown){
+    const errorMessage = err instanceof Error ? err.message: "Signin Failed";
+  }
+
 }
 
 export function* watchAuthSaga() {

@@ -1,12 +1,18 @@
-import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
-const FormInput = () => {
-  const intl = useIntl();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
+interface FormInput{
+  email : string;
+  password: string;
+  setEmail?: (value: string) => void;
+  setPassword?: (value: string) => void;
+}
+
+const FormInput = ({email, password, setEmail, setPassword}:FormInput) => {
+  const intl = useIntl();
+
+  console.log("data", email, password)
   return (
     <>
       <div>
@@ -18,7 +24,7 @@ const FormInput = () => {
           id="email"
           type="email"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={(event) => setEmail?.(event.target.value)}
           placeholder={intl.formatMessage({ id: "signup.emailPlaceholder" })}
           aria-label={intl.formatMessage({ id: "signin.emailLabel" })}
           autoComplete="email"
@@ -45,7 +51,7 @@ const FormInput = () => {
           id="password"
           type="password"
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(event) => setPassword?.(event.target.value)}
           placeholder="••••••••"
           autoComplete="current-password"
           className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"

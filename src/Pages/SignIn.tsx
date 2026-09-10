@@ -2,8 +2,13 @@ import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { FormattedMessage } from "react-intl";
 import FormInput from "../components/FormInput";
+import { useState } from "react";
 
 const Signin = () => {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
@@ -89,7 +94,7 @@ const Signin = () => {
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
-              <FormInput />
+              <FormInput email = {email} password={password} setEmail={setEmail} setPassword={setPassword}/>
 
               <button
                 type="submit"
