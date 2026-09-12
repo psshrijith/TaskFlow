@@ -2,7 +2,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 export const authService = {
-  async signUp(email: string, password: string, name?: string) {
+  async signUp(email: string, password: string, name?: string, phone?: string) {
     const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
       method: "POST",
       headers: {
@@ -12,7 +12,10 @@ export const authService = {
       body: JSON.stringify({
         email,
         password,
-        data: name ? { name } : {},
+        data: {
+          ...(name ? { name } : {}),
+          ...(phone ? { phone } : {}),
+        },
       }),
     });
     const data = await response.json();

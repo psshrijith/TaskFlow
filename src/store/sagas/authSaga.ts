@@ -12,11 +12,11 @@ interface SignInResponse{
 }
 
 function* handleSignup(
-  action: PayloadAction<{ email: string; password: string }>
+  action: PayloadAction<{ email: string; password: string; name?: string; phone?: string }>
 ): Generator<unknown, void, SignupResponse> {
   try {
-    const { email, password } = action.payload;
-    const response = yield call(authService.signUp, email, password);
+    const { email, password, name, phone } = action.payload;
+    const response = yield call(authService.signUp, email, password, name, phone);
     const token = response?.access_token;
 
     yield put(signupSuccess({accessToken: token}));

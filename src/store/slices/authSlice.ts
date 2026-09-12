@@ -26,7 +26,7 @@ const authSlice = createSlice({
   reducers: {
     signupRequest: (
       state,
-      action: PayloadAction<{ email: string; password: string }>,
+      action: PayloadAction<{ email: string; password: string; name?: string; phone?: string }>,
     ) => {
       void action;
       state.isLoading = true;

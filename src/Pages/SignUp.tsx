@@ -13,6 +13,8 @@ const Signup = () => {
   const navigate = useNavigate();
   const { isLoading, error, token } = useSelector((state: RootState) => state.auth);
 
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -25,7 +27,7 @@ const Signup = () => {
       setPasswordError(passwordError);
       return;
     }
-    dispatch(signupRequest({ email, password }));
+    dispatch(signupRequest({ email, password, name, phone }));
   };
 
   useEffect(() => {
@@ -131,6 +133,53 @@ const Signup = () => {
               )}
 
               <form onSubmit={handleSignUp} className="space-y-6">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="mb-2 block text-sm font-medium"
+                  >
+                    <FormattedMessage id="signup.nameLabel" />
+                  </label>
+
+                  <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder={intl.formatMessage({
+                      id: "signup.namePlaceholder",
+                    })}
+                    aria-label={intl.formatMessage({
+                      id: "signup.nameLabel",
+                    })}
+                    className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="mb-2 block text-sm font-medium"
+                  >
+                    <FormattedMessage id="signup.phoneLabel" />
+                  </label>
+
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                    placeholder={intl.formatMessage({
+                      id: "signup.phonePlaceholder",
+                    })}
+                    aria-label={intl.formatMessage({
+                      id: "signup.phoneLabel",
+                    })}
+                    className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
+                  />
+                </div>
+
                 <div>
                   <label
                     htmlFor="email"
