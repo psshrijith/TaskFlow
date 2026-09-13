@@ -31,8 +31,7 @@ function* handleSignup(
     const userDetails = response?.user && {
       id: response?.user.id,
       email: response?.user?.email,
-      name: response?.user?.user_metadata?.name,
-      phone: response?.user?.user_metadata?.phone
+      user_metadata: response?.user?.user_metadata
     };
 
     yield put(signupSuccess({accessToken: token, user: userDetails}));
@@ -47,8 +46,6 @@ function* handleSignIn(action: PayloadAction<{email: string, password: string }>
     const {email, password} = action.payload;
     const response = yield call(authService.signIn, email, password);
     const token = response?.access_token;
-
-    console.log("signin token", token);
     yield put(signinSuccess({accessToken: token}))
   }
   catch(err: unknown){

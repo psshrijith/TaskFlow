@@ -11,7 +11,9 @@ const Signup = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, token } = useSelector((state: RootState) => state.auth);
+  const { isLoading, error, token } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -32,7 +34,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
   }, [token, navigate]);
 

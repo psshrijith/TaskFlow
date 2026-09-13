@@ -11,8 +11,6 @@ interface FormInput{
 
 const FormInput = ({email, password, setEmail, setPassword}:FormInput) => {
   const intl = useIntl();
-
-  console.log("data", email, password)
   return (
     <>
       <div>
