@@ -1,7 +1,17 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { authService } from "../../api/authService";
-import { signinRequest, signinSuccess, signinFailure, signupRequest, signupFailure, signupSuccess } from "../slices/authSlice";
+import {
+  signinRequest,
+  signinSuccess,
+  signinFailure,
+  signupRequest,
+  signupFailure,
+  signupSuccess,
+  fetchUserRequest,
+  fetchUserSuccess,
+  fetchUserFailure,
+} from "../slices/authSlice";
 
 interface SupabaseUser {
   id: string;
@@ -19,6 +29,7 @@ interface SignupResponse{
 
 interface SignInResponse{
   access_token: string;
+  user?: SupabaseUser;
 }
 
 function* handleSignup(
@@ -54,7 +65,25 @@ function* handleSignIn(action: PayloadAction<{email: string, password: string }>
   }
 }
 
+function* handleFetchUser(
+  action: PayloadAction<{ token: string }>
+): Generator<unknown, void, SupabaseUser> {
+  try {
+    const response = yield call(authService.getCurrentUser, action.payload.token);
+    const userDetails: SupabaseUser = {
+      id: response.id,
+      email: response.email,
+      user_metadata: response.user_metadata,
+    };
+    yield put(fetchUserSuccess({ user: userDetails }));
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Fetch user failed";
+    yield put(fetchUserFailure(errorMessage));
+  }
+}
+
 export function* watchAuthSaga() {
   yield all([takeLatest(signupRequest.type, handleSignup)]);
   yield all([takeLatest(signinRequest.type, handleSignIn)]);
+  yield all([takeLatest(fetchUserRequest.type, handleFetchUser)]);
 }

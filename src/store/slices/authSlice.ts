@@ -13,7 +13,7 @@ const initialState: AuthState = {
     id: '',
     email: ''
   },
-  token: null,
+  token: localStorage.getItem("supabase_token") || null,
   isLoading: false,
   error: null,
 };
@@ -41,6 +41,8 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.token = null;
+      state.user = { id: '', email: '' };
+      localStorage.removeItem("supabase_token");
     },
     signinRequest: (
       state,
@@ -57,10 +59,32 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    fetchUserRequest: (state, _action: PayloadAction<{ token: string }>) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    fetchUserSuccess: (state, action: PayloadAction<{ user: SupabaseUser }>) => {
+      state.isLoading = false;
+      state.user = action.payload.user;
+    },
+    fetchUserFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { signupRequest, signupSuccess, signupFailure, logout, signinRequest, signinSuccess, signinFailure } =
-  authSlice.actions;
+export const {
+  signupRequest,
+  signupSuccess,
+  signupFailure,
+  logout,
+  signinRequest,
+  signinSuccess,
+  signinFailure,
+  fetchUserRequest,
+  fetchUserSuccess,
+  fetchUserFailure,
+} = authSlice.actions;
 
 export default authSlice.reducer;

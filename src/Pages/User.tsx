@@ -1,19 +1,33 @@
+import { useEffect } from "react";
 import SideBar from "../components/SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../store/slices/authSlice";
+import { logout, fetchUserRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 
 const User = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {email, id, user_metadata } = useSelector((state: RootState) => state.auth.user);
+  const reduxToken = useSelector((state: RootState) => state.auth.token);
+  const localToken = localStorage.getItem("supabase_token");
+  const token = reduxToken || localToken;
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const { email, id, user_metadata } = user || {};
+
+  useEffect(() => {
+    if (token && !id) {
+      dispatch(fetchUserRequest({ token }));
+    }
+  }, [token, id, dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem("supabase_token");
     navigate("/signup");
   };
+
+  
 
   return (
     <div className="flex min-h-screen bg-zinc-950 text-white">

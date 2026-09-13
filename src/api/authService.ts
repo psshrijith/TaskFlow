@@ -68,4 +68,18 @@ export const authService = {
   getToken(): string | null {
     return localStorage.getItem("supabase_token");
   },
+
+  async getCurrentUser(token: string) {
+    const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      method: "GET",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error_description || data.msg || "Failed to fetch user");
+    return data;
+  },
 };
