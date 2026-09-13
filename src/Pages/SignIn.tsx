@@ -1,20 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { motion } from "motion/react";
 import { FormattedMessage } from "react-intl";
 import FormInput from "../components/FormInput";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { signinRequest } from "../store/slices/authSlice";
+import {useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signinRequest, signinSuccess } from "../store/slices/authSlice";
+import type { RootState } from "../store";
 
 const Signin = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {isLoading, token } = useSelector(
+      (state: RootState) => state.auth,
+    );
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(signinRequest({ email, password }));
   };
+
+    useEffect(() => {
+      if (token) {
+        navigate("/dashboard");
+      }
+    }, [token, navigate]);
 
   return (
     <motion.div
@@ -105,11 +116,16 @@ const Signin = () => {
               />
 
               <button
-                type="submit"
-                className="w-full rounded-xl bg-zinc-950 px-4 py-3.5 font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.99]"
-              >
-                <FormattedMessage id="signin.submitButton" />
-              </button>
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full rounded-xl bg-zinc-950 px-4 py-3.5 font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.99] disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    "Signing in..."
+                  ) : (
+                    <FormattedMessage id="signin.submitButton" />
+                  )}
+                </button>
             </form>
 
             <div className="my-8 flex items-center gap-4">
