@@ -47,7 +47,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem("supabase_token");
-    navigate('/signup');
+    navigate('/signin');
   };
 
   return (
