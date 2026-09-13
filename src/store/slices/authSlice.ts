@@ -52,7 +52,7 @@ const authSlice = createSlice({
       state.user = { id: "", email: "" };
       localStorage.removeItem("supabase_token");
     },
-    signinRequest: (state) => {
+    signinRequest: (state, _action: PayloadAction<{email: string, password: string}>) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -64,7 +64,7 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    fetchUserRequest: (state) => {
+    fetchUserRequest: (state, _action: PayloadAction<{token: string}>) => {
       state.isLoading = true;
       state.error = null;
     },
