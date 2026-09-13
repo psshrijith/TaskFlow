@@ -1,20 +1,18 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
-export interface UserProfile {
-  id: string;
-  email: string;
-  name?: string;
-}
+import type { SupabaseUser } from "../../types/types";
 
 interface AuthState {
-  user: UserProfile | null;
+  user: SupabaseUser;
   token: string | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
-  user: null,
+  user: {
+    id: '',
+    email: ''
+  },
   token: null,
   isLoading: false,
   error: null,
@@ -32,9 +30,10 @@ const authSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    signupSuccess: (state, action: PayloadAction<{ accessToken: string }>) => {
+    signupSuccess: (state, action: PayloadAction<{ accessToken: string, user: SupabaseUser }>) => {
       state.isLoading = false;
       state.token = action.payload.accessToken;
+      state.user = action.payload.user;
     },
     signupFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;

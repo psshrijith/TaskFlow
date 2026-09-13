@@ -23,3 +23,12 @@ export type TaskCardProps = {
   handleDeleteTask?: (taskId: string | number) => void;
   handleView?: (taskId: string | number) => void;
 };
+
+export interface SupabaseUser {
+  id: string;
+  email: string;
+  user_metadata?: {
+    name?: string;
+    phone?: string;
+  };
+}

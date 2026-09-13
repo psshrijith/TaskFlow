@@ -3,8 +3,18 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import { authService } from "../../api/authService";
 import { signinRequest, signinSuccess, signinFailure, signupRequest, signupFailure, signupSuccess } from "../slices/authSlice";
 
+interface SupabaseUser {
+  id: string;
+  email: string;
+  user_metadata?: {
+    name?: string;
+    phone?: string;
+  };
+}
+
 interface SignupResponse{
   access_token: string;
+  user: SupabaseUser;
 }
 
 interface SignInResponse{
@@ -18,8 +28,14 @@ function* handleSignup(
     const { email, password, name, phone } = action.payload;
     const response = yield call(authService.signUp, email, password, name, phone);
     const token = response?.access_token;
+    const userDetails = response?.user && {
+      id: response?.user.id,
+      email: response?.user?.email,
+      name: response?.user?.user_metadata?.name,
+      phone: response?.user?.user_metadata?.phone
+    };
 
-    yield put(signupSuccess({accessToken: token}));
+    yield put(signupSuccess({accessToken: token, user: userDetails}));
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : "Signup Failed";
     yield put(signupFailure(errorMessage));
