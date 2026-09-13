@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import FormInput from "../components/FormInput";
 import {useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signinRequest, signinSuccess } from "../store/slices/authSlice";
+import { signinRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 
 const Signin = () => {

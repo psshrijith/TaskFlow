@@ -10,8 +10,8 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: {
-    id: '',
-    email: ''
+    id: "",
+    email: "",
   },
   token: localStorage.getItem("supabase_token") || null,
   isLoading: false,
@@ -24,13 +24,21 @@ const authSlice = createSlice({
   reducers: {
     signupRequest: (
       state,
-      action: PayloadAction<{ email: string; password: string; name?: string; phone?: string }>,
+      action: PayloadAction<{
+        email: string;
+        password: string;
+        name?: string;
+        phone?: string;
+      }>,
     ) => {
       void action;
       state.isLoading = true;
       state.error = null;
     },
-    signupSuccess: (state, action: PayloadAction<{ accessToken: string, user: SupabaseUser }>) => {
+    signupSuccess: (
+      state,
+      action: PayloadAction<{ accessToken: string; user: SupabaseUser }>,
+    ) => {
       state.isLoading = false;
       state.token = action.payload.accessToken;
       state.user = action.payload.user;
@@ -41,13 +49,10 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.token = null;
-      state.user = { id: '', email: '' };
+      state.user = { id: "", email: "" };
       localStorage.removeItem("supabase_token");
     },
-    signinRequest: (
-      state,
-      _action: PayloadAction<{ email: String; password: string }>,
-    ) => {
+    signinRequest: (state) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -59,11 +64,14 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    fetchUserRequest: (state, _action: PayloadAction<{ token: string }>) => {
+    fetchUserRequest: (state) => {
       state.isLoading = true;
       state.error = null;
     },
-    fetchUserSuccess: (state, action: PayloadAction<{ user: SupabaseUser }>) => {
+    fetchUserSuccess: (
+      state,
+      action: PayloadAction<{ user: SupabaseUser }>,
+    ) => {
       state.isLoading = false;
       state.user = action.payload.user;
     },
