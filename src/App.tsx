@@ -9,6 +9,7 @@ import User from "./Pages/User";
 import Profile from "./Pages/Profile";
 import "./index.css";
 import ProtectedRoute from "./ProtectedRoute";
+import AppLayout from "./layouts/AppLayout";
 
 function App() {
   return (
@@ -20,11 +21,13 @@ function App() {
           <Route path="/login" element={<Signin />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/task/:taskId" element={<TaskDetails />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/task/:taskId" element={<TaskDetails />} />
+              <Route path="/user" element={<User />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
