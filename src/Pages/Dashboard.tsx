@@ -1,19 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import type { Task } from "../types/types";
 import EmptyState from "../components/EmptyState";
+import type { RootState } from "../store";
+import { taskService } from "../api/taskService";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const token = useSelector((state: RootState) => state.auth.token) || localStorage.getItem("supabase_token");
+
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [tasks, setTasks] = useState<Task[]>(() =>
-    JSON.parse(localStorage.getItem("tasks") || "[]"),
-  );
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const filteredTasks =
     searchValue.trim() === ""
@@ -23,6 +26,20 @@ const Dashboard = () => {
             item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
             item.description.toLowerCase().includes(searchValue.toLowerCase()),
         );
+
+  useEffect(() => {
+    async function loadTasks() {
+      if (token) {
+        try {
+          const apiTasks = await taskService.getTasks(token);
+          setTasks(apiTasks || []);
+        } catch (err) {
+          console.error("Failed to fetch tasks from API:", err);
+        }
+      }
+    }
+    loadTasks();
+  }, [token]);
 
   const handleDeleteTask = (taskId: string | number) => {
     setTasks((prev) => {
