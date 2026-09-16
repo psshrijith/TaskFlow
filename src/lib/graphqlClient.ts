@@ -1,3 +1,5 @@
+import { handleForceLogout } from "../utils/handleForceLogout";
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
@@ -24,9 +26,25 @@ export async function fetchGraphQL<T = unknown>(
     body: JSON.stringify({ query, variables }),
   });
 
+  if (response.status === 401) {
+    handleForceLogout();
+    throw new Error("Session expired. Please log in again.");
+  }
+
   const json = (await response.json()) as GraphQLResponse<T>;
 
   if (json.errors && json.errors.length > 0) {
+    const isAuthError = json.errors.some(
+      (err) =>
+        err.message.toLowerCase().includes("jwt") ||
+        err.message.toLowerCase().includes("unauthorized") ||
+        err.message.toLowerCase().includes("expired")
+    );
+
+    if (isAuthError) {
+      handleForceLogout();
+    }
+
     throw new Error(json.errors.map((err) => err.message).join("\n"));
   }
 

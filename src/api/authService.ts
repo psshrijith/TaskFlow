@@ -1,3 +1,5 @@
+import { handleForceLogout } from "../utils/handleForceLogout";
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
@@ -79,6 +81,10 @@ export const authService = {
     });
 
     const data = await response.json();
+    if (response.status === 401 || data.error_code === "jwt_expired") {
+      handleForceLogout();
+      throw new Error("Session expired. Please log in again.");
+    }
     if (!response.ok) throw new Error(data.error_description || data.msg || "Failed to fetch user");
     return data;
   },
