@@ -57,7 +57,10 @@ function* handleSignIn(action: PayloadAction<{email: string, password: string }>
     const {email, password} = action.payload;
     const response = yield call(authService.signIn, email, password);
     const token = response?.access_token;
-    yield put(signinSuccess({accessToken: token}))
+    yield put(signinSuccess({accessToken: token}));
+    if (token) {
+      yield put(fetchUserRequest({ token }));
+    }
   }
   catch(err: unknown){
     const errorMessage = err instanceof Error ? err.message: "Signin Failed";
