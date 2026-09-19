@@ -2,6 +2,7 @@ import { handleForceLogout } from "../utils/handleForceLogout";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+const HASURA_URL = import.meta.env.VITE_HASURA_GRAPHQL_URL || "";
 
 type GraphQLResponse<T> = {
   data: T;
@@ -13,7 +14,7 @@ export async function fetchGraphQL<T = unknown>(
   variables: Record<string, unknown> = {},
   userToken?: string
 ): Promise<T> {
-  const endpoint = `${SUPABASE_URL}/graphql/v1`;
+  const endpoint = HASURA_URL || `${SUPABASE_URL}/graphql/v1`;
   const authToken = userToken || SUPABASE_ANON_KEY;
 
   const response = await fetch(endpoint, {

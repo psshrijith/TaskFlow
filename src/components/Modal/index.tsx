@@ -3,19 +3,18 @@ import { useIntl } from "react-intl";
 import Dropdown from "../DropDown";
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
-import type { Task, TaskCardProps } from "../../types/types";
+import type { TaskCardProps } from "../../types/types";
 
 type ModalProps = {
   isOpenModal: boolean;
   setIsOpenModal: (isOpen: boolean) => void;
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 };
 
 type TaskFormData = Omit<TaskCardProps, "tags"> & {
   tags: string;
 };
 
-const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
+const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   const intl = useIntl();
 
   const statusOptions = [
@@ -95,27 +94,6 @@ const Modal = ({ isOpenModal, setIsOpenModal, setTasks }: ModalProps) => {
       title: "",
       description: "",
       dueDate: "",
-    });
-
-    const task = {
-      id: crypto.randomUUID(),
-      title: taskData.title.trim(),
-      description: taskData.description.trim(),
-      taskStatus: taskData.status,
-      priority: taskData.priority,
-      dueDate: taskData.dueDate,
-      tags: taskData.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-    };
-
-    setTasks((previousTasks) => {
-      const updatedTasks = [...previousTasks, task];
-
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-
-      return updatedTasks;
     });
 
     setIsOpenModal(false);

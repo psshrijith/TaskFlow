@@ -2,21 +2,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
-import type { Task } from "../types/types";
 import EmptyState from "../components/EmptyState";
-import type { RootState } from "../store";
-import { taskService } from "../api/taskService";
+import type { RootState, AppDispatch } from "../store";
+import { fetchTasksRequest } from "../store/slices/taskSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   const token = useSelector((state: RootState) => state.auth.token) || localStorage.getItem("supabase_token");
+  const { tasks, isLoading } = useSelector((state: RootState) => state.tasks);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [tasks, setTasks] = useState<Task[]>([]);
 
   const filteredTasks =
     searchValue.trim() === ""
@@ -28,27 +29,14 @@ const Dashboard = () => {
         );
 
   useEffect(() => {
-    async function loadTasks() {
-      if (token) {
-        try {
-          const apiTasks = await taskService.getTasks(token);
-          setTasks(apiTasks || []);
-        } catch (err) {
-          console.error("Failed to fetch tasks from API:", err);
-        }
-      }
+    if (token) {
+      dispatch(fetchTasksRequest({ token }));
     }
-    loadTasks();
-  }, [token]);
+  }, [dispatch, token]);
 
-  const handleDeleteTask = (taskId: string | number) => {
-    setTasks((prev) => {
-      const updated = prev.filter((task) => task.id !== taskId);
-      localStorage.setItem("tasks", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
+  const handleDeleteTask = () => {
+    console.log("delete task");
+  }
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
@@ -99,12 +87,15 @@ const Dashboard = () => {
           <Modal
             isOpenModal={isOpenModal}
             setIsOpenModal={setIsOpenModal}
-            setTasks={setTasks}
           />
         )}
       </div>
 
-      {filteredTasks.length > 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12 text-sm text-gray-400">
+          Loading tasks...
+        </div>
+      ) : filteredTasks.length > 0 ? (
         <TaskList
           tasks={filteredTasks}
           handleDeleteTask={handleDeleteTask}

@@ -1,0 +1,42 @@
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Task } from "../../types/types";
+
+interface TaskState {
+  tasks: Task[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+const initialState: TaskState = {
+  tasks: [],
+  isLoading: false,
+  error: null,
+};
+
+const taskSlice = createSlice({
+  name: "tasks",
+  initialState,
+  reducers: {
+    fetchTasksRequest: (state, action: PayloadAction<{ token?: string } | undefined>) => {
+      void action;
+      state.isLoading = true;
+      state.error = null;
+    },
+    fetchTasksSuccess: (state, action: PayloadAction<Task[]>) => {
+      state.isLoading = false;
+      state.tasks = action.payload;
+    },
+    fetchTasksFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+  },
+});
+
+export const {
+  fetchTasksRequest,
+  fetchTasksSuccess,
+  fetchTasksFailure,
+} = taskSlice.actions;
+
+export default taskSlice.reducer;
