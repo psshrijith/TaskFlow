@@ -6,6 +6,9 @@ import {
   fetchTasksRequest,
   fetchTasksSuccess,
   fetchTasksFailure,
+  createTaskRequest,
+  createTaskSuccess,
+  createTaskFailure,
 } from "../slices/taskSlice";
 
 function* handleFetchTasks(
@@ -21,8 +24,22 @@ function* handleFetchTasks(
   }
 }
 
+function* handleCreateTask(
+  action: PayloadAction<{ task: Omit<Task, "id">; userId: string; token?: string }>
+): Generator<unknown, void, Task> {
+  try {
+    const { task, userId, token } = action.payload;
+    const newTask: Task = yield call(taskService.createTask, task, userId, token);
+    yield put(createTaskSuccess(newTask));
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Failed to create task";
+    yield put(createTaskFailure(errorMessage));
+  }
+}
+
 export function* watchTaskSaga() {
   yield all([
     takeLatest(fetchTasksRequest.type, handleFetchTasks),
+    takeLatest(createTaskRequest.type, handleCreateTask),
   ]);
 }

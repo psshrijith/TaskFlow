@@ -4,6 +4,9 @@ import Dropdown from "../DropDown";
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
 import type { TaskCardProps } from "../../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store";
+import { createTaskRequest } from "../../store/slices/taskSlice";
 
 type ModalProps = {
   isOpenModal: boolean;
@@ -16,6 +19,12 @@ type TaskFormData = Omit<TaskCardProps, "tags"> & {
 
 const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   const intl = useIntl();
+  const dispatch = useDispatch();
+
+  const token = useSelector((state: RootState) => state.auth.token) || localStorage.getItem("supabase_token");
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  console.log("data", user);
 
   const statusOptions = [
     { label: intl.formatMessage({ id: "task.status.todo" }), value: "todo" },
@@ -89,6 +98,21 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
       setErrors(validationErrors);
       return;
     }
+
+    dispatch(
+      createTaskRequest({
+        task: {
+          title: taskData.title.trim(),
+          description: taskData.description.trim(),
+          taskStatus: taskData.status,
+          priority: taskData.priority,
+          dueDate: taskData.dueDate,
+          tags: taskData.tags.split(",").map((t) => t.trim()).filter(Boolean),
+        },
+        userId: user?.id || "",
+        token: token || undefined,
+      })
+    );
 
     setErrors({
       title: "",

@@ -30,13 +30,33 @@ const taskSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    createTaskRequest: (
+      state,
+      action: PayloadAction<{ task: Omit<Task, "id">; userId: string; token?: string }>
+    ) => {
+      void action;
+      state.isLoading = true;
+      state.error = null;
+    },
+    createTaskSuccess: (state, action: PayloadAction<Task>) => {
+      state.isLoading = false;
+      state.tasks = [action.payload, ...state.tasks]
+    },
+    createTaskFailure: (state, action: PayloadAction<string>) => {
+        state.isLoading = false;
+        state.error = action.payload;
+    }
   },
 });
+
 
 export const {
   fetchTasksRequest,
   fetchTasksSuccess,
   fetchTasksFailure,
+  createTaskRequest,
+  createTaskSuccess,
+  createTaskFailure
 } = taskSlice.actions;
 
 export default taskSlice.reducer;
