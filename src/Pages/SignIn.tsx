@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import FormInput from "../components/FormInput";
 import {useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signinRequest } from "../store/slices/authSlice";
+import { clearAuthError, signinRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 
 const Signin = () => {
@@ -21,11 +21,18 @@ const Signin = () => {
     dispatch(signinRequest({ email, password }));
   };
 
-    useEffect(() => {
-      if (token) {
-        navigate("/dashboard");
-      }
-    }, [token, navigate]);
+  useEffect(() => {
+    dispatch(clearAuthError());
+    return () => {
+      dispatch(clearAuthError());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token, navigate]);
 
   return (
     <motion.div

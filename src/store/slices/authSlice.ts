@@ -81,6 +81,9 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    clearAuthError: (state) => {
+      state.error = null;
+    },
   },
 });
 
@@ -95,6 +98,7 @@ export const {
   fetchUserRequest,
   fetchUserSuccess,
   fetchUserFailure,
+  clearAuthError,
 } = authSlice.actions;
 
 export default authSlice.reducer;

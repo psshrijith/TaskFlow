@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { signupRequest } from "../store/slices/authSlice";
+import { clearAuthError, signupRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 import validatePassword from "../utils/validatePassword";
 
@@ -31,6 +31,13 @@ const Signup = () => {
     }
     dispatch(signupRequest({ email, password, name, phone }));
   };
+
+  useEffect(() => {
+    dispatch(clearAuthError());
+    return () => {
+      dispatch(clearAuthError());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (token) {
