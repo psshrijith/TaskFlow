@@ -21,7 +21,6 @@ const TaskDetails = () => {
     draftTask: null,
     titleError: "",
   });
-
   const tasks = JSON.parse(localStorage.getItem("tasks") || "[]") as Task[];
   const task = tasks.find((item) => item.id === taskId);
 
