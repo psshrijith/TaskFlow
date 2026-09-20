@@ -12,9 +12,9 @@ const Signin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {isLoading, token } = useSelector(
-      (state: RootState) => state.auth,
-    );
+  const { isLoading, token, error } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -106,6 +106,13 @@ const Signin = () => {
                 <FormattedMessage id="signin.formDescription" />
               </p>
             </div>
+
+            {error && (
+              <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                <p className="font-semibold">Unable to sign in</p>
+                <p className="mt-0.5 text-xs text-red-600">{error}</p>
+              </div>
+            )}
 
             <form onSubmit={handleLogin} className="space-y-6">
               <FormInput
