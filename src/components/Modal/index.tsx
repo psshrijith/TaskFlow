@@ -22,8 +22,6 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   const dispatch = useDispatch();
 
   const token = useSelector((state: RootState) => state.auth.token) || localStorage.getItem("supabase_token");
-  const user = useSelector((state: RootState) => state.auth.user);
-  const userId = user?.id;
 
   const statusOptions = [
     { label: intl.formatMessage({ id: "task.status.todo" }), value: "todo" },
@@ -108,7 +106,6 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
           dueDate: taskData.dueDate,
           tags: taskData.tags.split(",").map((t) => t.trim()).filter(Boolean),
         },
-        userId: userId,
         token: token || undefined,
       })
     );

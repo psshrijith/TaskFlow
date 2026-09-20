@@ -32,7 +32,7 @@ const taskSlice = createSlice({
     },
     createTaskRequest: (
       state,
-      action: PayloadAction<{ task: Omit<Task, "id">; userId: string; token?: string }>
+      action: PayloadAction<{ task: Omit<Task, "id">; token?: string }>
     ) => {
       void action;
       state.isLoading = true;

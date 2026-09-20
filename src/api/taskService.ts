@@ -103,9 +103,8 @@ export const taskService = {
     };
   },
 
-  async createTask(task: Omit<Task, "id">, userId: string, userToken?: string): Promise<Task> {
+  async createTask(task: Omit<Task, "id">, userToken?: string): Promise<Task> {
     const object = {
-      user_id: userId,
       title: task.title,
       description: task.description,
       status: task.taskStatus,

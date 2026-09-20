@@ -25,11 +25,11 @@ function* handleFetchTasks(
 }
 
 function* handleCreateTask(
-  action: PayloadAction<{ task: Omit<Task, "id">; userId: string; token?: string }>
+  action: PayloadAction<{ task: Omit<Task, "id">; token?: string }>
 ): Generator<unknown, void, Task> {
   try {
-    const { task, userId, token } = action.payload;
-    const newTask: Task = yield call(taskService.createTask, task, userId, token);
+    const { task, token } = action.payload;
+    const newTask: Task = yield call(taskService.createTask, task, token);
     yield put(createTaskSuccess(newTask));
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : "Failed to create task";
