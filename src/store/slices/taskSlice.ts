@@ -45,6 +45,19 @@ const taskSlice = createSlice({
     createTaskFailure: (state, action: PayloadAction<string>) => {
         state.isLoading = false;
         state.error = action.payload;
+    },
+    fetchTaskByIDRequest: (state, action: PayloadAction<{token?: string; id: string}>) => {
+      void action;
+      state.isLoading = true;
+      state.error = null;
+    },
+    fetchTaskByIDSuccess: (state, action:PayloadAction<Task>) => {
+      state.isLoading = false;
+      state.tasks = [action.payload, ...state.tasks];
+    },
+    fetchTaskByIDFailure: (state, action:PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
     }
   },
 });
@@ -56,7 +69,10 @@ export const {
   fetchTasksFailure,
   createTaskRequest,
   createTaskSuccess,
-  createTaskFailure
+  createTaskFailure,
+  fetchTaskByIDRequest,
+  fetchTaskByIDSuccess,
+  fetchTaskByIDFailure
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

@@ -7,7 +7,7 @@ import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import EmptyState from "../components/EmptyState";
 import type { RootState, AppDispatch } from "../store";
-import { fetchTasksRequest } from "../store/slices/taskSlice";
+import { fetchTaskByIDRequest, fetchTasksRequest } from "../store/slices/taskSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ const Dashboard = () => {
 
   const handleView = (taskId: string | number) => {
     navigate(`/task/${taskId}`);
+    dispatch(fetchTaskByIDRequest({token: token || undefined, id: String(taskId) }));
   };
 
   return (

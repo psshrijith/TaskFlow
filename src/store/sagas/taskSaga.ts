@@ -9,6 +9,9 @@ import {
   createTaskRequest,
   createTaskSuccess,
   createTaskFailure,
+  fetchTaskByIDFailure,
+  fetchTaskByIDSuccess,
+  fetchTaskByIDRequest
 } from "../slices/taskSlice";
 
 function* handleFetchTasks(
@@ -37,9 +40,23 @@ function* handleCreateTask(
   }
 }
 
+function* handleFetchTaskByID(action: PayloadAction<{id:string; token:string}>): Generator<unknown, void, Task> {
+  try{
+    const {id, token} = action.payload;
+    const task: Task = yield call(taskService.getTaskById, id, token);
+    yield put(fetchTaskByIDSuccess(task));
+  }
+  catch(err: unknown){
+    const errorMessage = err instanceof Error ? err.message : "Failed to fetch the task";
+    yield put(fetchTaskByIDFailure(errorMessage))
+  }
+}
+
+
 export function* watchTaskSaga() {
   yield all([
     takeLatest(fetchTasksRequest.type, handleFetchTasks),
     takeLatest(createTaskRequest.type, handleCreateTask),
+    takeLatest(fetchTaskByIDRequest.type, handleFetchTaskByID)
   ]);
 }
