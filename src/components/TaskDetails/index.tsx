@@ -8,6 +8,7 @@ import TaskHeader from "./TaskHeader";
 import TaskProperties from "./TaskProperties";
 import type { AppDispatch, RootState } from "../../store";
 import { fetchTaskByIDRequest } from "../../store/slices/taskSlice";
+import Loader from "../Loader";
 
 type EditState = {
   isEditing: boolean;
@@ -39,11 +40,7 @@ const TaskDetails = () => {
   const task = tasks.find((item) => item.id === taskId);
 
   if (isLoading && !task) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-6 text-white">
-        <p className="text-gray-400">Loading task details...</p>
-      </div>
-    );
+    return <Loader message="Loading task details..." fullScreen />;
   }
 
   if (!task) {

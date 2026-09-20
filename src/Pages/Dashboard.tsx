@@ -8,6 +8,7 @@ import TaskList from "../components/TaskList";
 import EmptyState from "../components/EmptyState";
 import type { RootState, AppDispatch } from "../store";
 import { fetchTasksRequest } from "../store/slices/taskSlice";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -91,9 +92,7 @@ const Dashboard = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-12 text-sm text-gray-400">
-          Loading tasks...
-        </div>
+        <Loader message="Loading tasks..." />
       ) : filteredTasks.length > 0 ? (
         <TaskList
           tasks={filteredTasks}
