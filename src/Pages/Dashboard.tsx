@@ -7,13 +7,15 @@ import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import EmptyState from "../components/EmptyState";
 import type { RootState, AppDispatch } from "../store";
-import { fetchTaskByIDRequest, fetchTasksRequest } from "../store/slices/taskSlice";
+import { fetchTasksRequest } from "../store/slices/taskSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const token = useSelector((state: RootState) => state.auth.token) || localStorage.getItem("supabase_token");
+  const token =
+    useSelector((state: RootState) => state.auth.token) ||
+    localStorage.getItem("supabase_token");
   const { tasks, isLoading } = useSelector((state: RootState) => state.tasks);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -36,14 +38,13 @@ const Dashboard = () => {
 
   const handleDeleteTask = () => {
     console.log("delete task");
-  }
+  };
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
   const handleView = (taskId: string | number) => {
     navigate(`/task/${taskId}`);
-    dispatch(fetchTaskByIDRequest({token: token || undefined, id: String(taskId) }));
   };
 
   return (
@@ -85,10 +86,7 @@ const Dashboard = () => {
 
       <div className="flex items-center justify-center">
         {isOpenModal && (
-          <Modal
-            isOpenModal={isOpenModal}
-            setIsOpenModal={setIsOpenModal}
-          />
+          <Modal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
         )}
       </div>
 

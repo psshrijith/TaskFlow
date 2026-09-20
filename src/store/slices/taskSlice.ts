@@ -51,9 +51,14 @@ const taskSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    fetchTaskByIDSuccess: (state, action:PayloadAction<Task>) => {
+    fetchTaskByIDSuccess: (state, action: PayloadAction<Task>) => {
       state.isLoading = false;
-      state.tasks = [action.payload, ...state.tasks];
+      const index = state.tasks.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state.tasks[index] = action.payload;
+      } else {
+        state.tasks.push(action.payload);
+      }
     },
     fetchTaskByIDFailure: (state, action:PayloadAction<string>) => {
       state.isLoading = false;

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import type { Task } from "../../types/types";
 import TaskContent from "./TaskContent";
 import TaskHeader from "./TaskHeader";
 import TaskProperties from "./TaskProperties";
+import type { AppDispatch, RootState } from "../../store";
+import { fetchTaskByIDRequest } from "../../store/slices/taskSlice";
 
 type EditState = {
   isEditing: boolean;
@@ -14,15 +17,34 @@ type EditState = {
 
 const TaskDetails = () => {
   const navigate = useNavigate();
-  const { taskId } = useParams();
+  const { taskId } = useParams<{ taskId: string }>();
   const intl = useIntl();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const token = useSelector((state: RootState) => state.auth.token) || localStorage.getItem("supabase_token");
+  const { tasks, isLoading } = useSelector((state: RootState) => state.tasks);
+
   const [editState, setEditState] = useState<EditState>({
     isEditing: false,
     draftTask: null,
     titleError: "",
   });
-  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]") as Task[];
+
+  useEffect(() => {
+    if (taskId && token) {
+      dispatch(fetchTaskByIDRequest({ id: taskId, token: token || undefined }));
+    }
+  }, [dispatch, taskId, token]);
+
   const task = tasks.find((item) => item.id === taskId);
+
+  if (isLoading && !task) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-6 text-white">
+        <p className="text-gray-400">Loading task details...</p>
+      </div>
+    );
+  }
 
   if (!task) {
     return (
@@ -52,7 +74,7 @@ const TaskDetails = () => {
   const updateDraft = (changes: Partial<Task>) => {
     setEditState((current) => ({
       ...current,
-      draftTask: current.draftTask ? {...current.draftTask, ...changes} : current.draftTask,
+      draftTask: current.draftTask ? { ...current.draftTask, ...changes } : current.draftTask,
       titleError: "",
     }));
   };
@@ -72,11 +94,6 @@ const TaskDetails = () => {
       return;
     }
 
-    const updatedTasks = tasks.map((item) =>
-      item.id === task.id ? { ...editedTask, title: nextTitle } : item,
-    );
-
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     setEditState({ isEditing: false, draftTask: null, titleError: "" });
   };
 
@@ -113,7 +130,7 @@ const TaskDetails = () => {
             task={editedTask}
             isEditing={editState.isEditing}
             onStatusChange={(taskStatus) => updateDraft({ taskStatus })}
-            onPriorityChange={(priority) => updateDraft({priority})}
+            onPriorityChange={(priority) => updateDraft({ priority })}
           />
         </div>
       </div>
