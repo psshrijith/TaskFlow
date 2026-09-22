@@ -53,17 +53,25 @@ const taskSlice = createSlice({
     },
     fetchTaskByIDSuccess: (state, action: PayloadAction<Task>) => {
       state.isLoading = false;
-      const index = state.tasks.findIndex((t) => t.id === action.payload.id);
-      if (index !== -1) {
-        state.tasks[index] = action.payload;
-      } else {
-        state.tasks.push(action.payload);
-      }
+      state.tasks.push(action.payload);
     },
     fetchTaskByIDFailure: (state, action:PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
-    }
+    },
+    deleteTaskRequest:(state, action: PayloadAction<{token: string; id: string}>) => {
+      void action;
+      state.isLoading = true;
+      state.error = null;
+    },
+    deleteTaskSuccess: (state, action: PayloadAction<Task>) => {
+      state.isLoading = false;
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload.id);
+    },
+    deleteTaskFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -77,7 +85,10 @@ export const {
   createTaskFailure,
   fetchTaskByIDRequest,
   fetchTaskByIDSuccess,
-  fetchTaskByIDFailure
+  fetchTaskByIDFailure,
+  deleteTaskRequest,
+  deleteTaskSuccess,
+  deleteTaskFailure,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;
