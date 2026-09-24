@@ -55,7 +55,7 @@ const TaskCard = ({
             className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-700 bg-gray-800 text-gray-400 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
             aria-label={intl.formatMessage({ id: "task.deleteTask" })}
             type="button"
-            onClick={() => handleDeleteTask?.(id)}
+            onClick={() => handleDeleteTask?.(String(id))}
           >
             <FontAwesomeIcon icon={faTrash} className="text-xs" />
           </button>

@@ -11,7 +11,10 @@ import {
   createTaskFailure,
   fetchTaskByIDFailure,
   fetchTaskByIDSuccess,
-  fetchTaskByIDRequest
+  fetchTaskByIDRequest,
+  deleteTaskRequest,
+  deleteTaskFailure,
+  deleteTaskSuccess
 } from "../slices/taskSlice";
 
 function* handleFetchTasks(
@@ -52,11 +55,23 @@ function* handleFetchTaskByID(action: PayloadAction<{id:string; token:string}>):
   }
 }
 
+function* handleDeleteTaskByID(action: PayloadAction<{token: string; id: string;}>): Generator<unknown, void, Task>{
+  try{
+    const {id, token} = action.payload;
+    yield call(taskService.deleteTask, id, token);
+    yield put(deleteTaskSuccess(id));
+  }
+  catch(err:unknown){
+    const errorMessage = err instanceof Error ? err.message : "Failed to delete the task";
+    yield put(deleteTaskFailure(errorMessage));
+  }
+}
 
 export function* watchTaskSaga() {
   yield all([
     takeLatest(fetchTasksRequest.type, handleFetchTasks),
     takeLatest(createTaskRequest.type, handleCreateTask),
-    takeLatest(fetchTaskByIDRequest.type, handleFetchTaskByID)
+    takeLatest(fetchTaskByIDRequest.type, handleFetchTaskByID),
+    takeLatest(deleteTaskRequest.type, handleDeleteTaskByID)
   ]);
 }

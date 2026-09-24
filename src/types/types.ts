@@ -20,7 +20,7 @@ export type TaskCardProps = {
   tags: string[];
   status: TaskStatus;
   dueDate: string;
-  handleDeleteTask?: (taskId: string | number) => void;
+  handleDeleteTask?: (taskId: string) => void;
   handleView?: (taskId: string | number) => void;
 };
 

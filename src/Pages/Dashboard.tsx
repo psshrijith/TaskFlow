@@ -7,7 +7,7 @@ import Modal from "../components/Modal";
 import TaskList from "../components/TaskList";
 import EmptyState from "../components/EmptyState";
 import type { RootState, AppDispatch } from "../store";
-import { fetchTasksRequest } from "../store/slices/taskSlice";
+import { fetchTasksRequest, deleteTaskRequest } from "../store/slices/taskSlice";
 import Loader from "../components/Loader";
 
 const Dashboard = () => {
@@ -37,9 +37,10 @@ const Dashboard = () => {
     }
   }, [dispatch, token]);
 
-  const handleDeleteTask = () => {
-    console.log("delete task");
+  const handleDeleteTask = (id:string) => {
+    dispatch(deleteTaskRequest({token: token || '', id: id}))
   };
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };

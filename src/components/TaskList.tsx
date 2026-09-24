@@ -3,7 +3,7 @@ import TaskCard from "./TaskCard";
 
 type TaskListProps = {
     tasks : Task[];
-    handleDeleteTask : (taskId: string | number ) => void;
+    handleDeleteTask : (taskId: string) => void;
     handleView: (taskId: string | number ) => void;
 }
 const TaskList = ({tasks, handleDeleteTask, handleView}: TaskListProps) => {

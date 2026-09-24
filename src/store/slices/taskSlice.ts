@@ -64,9 +64,9 @@ const taskSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    deleteTaskSuccess: (state, action: PayloadAction<Task>) => {
+    deleteTaskSuccess: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload.id);
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
     },
     deleteTaskFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
