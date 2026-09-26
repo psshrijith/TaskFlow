@@ -134,7 +134,6 @@ export const taskService = {
     if (changes.taskStatus !== undefined) set.status = changes.taskStatus;
     if (changes.priority !== undefined) set.priority = changes.priority;
     if (changes.dueDate !== undefined) set.due_date = changes.dueDate;
-    set.updated_at = new Date().toISOString();
 
     const data = await fetchGraphQL<{ update_tasks_by_pk?: TaskRow }>(UPDATE_TASK_MUTATION, { id, set }, userToken);
     const row = data?.update_tasks_by_pk;

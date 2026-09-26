@@ -37,8 +37,8 @@ const Dashboard = () => {
     }
   }, [dispatch, token]);
 
-  const handleDeleteTask = (id:string) => {
-    dispatch(deleteTaskRequest({token: token || '', id: id}))
+  const handleDeleteTask = (id: string | number) => {
+    dispatch(deleteTaskRequest({ token: token || '', id: String(id) }));
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {

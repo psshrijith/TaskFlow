@@ -14,7 +14,10 @@ import {
   fetchTaskByIDRequest,
   deleteTaskRequest,
   deleteTaskFailure,
-  deleteTaskSuccess
+  deleteTaskSuccess,
+  updateTaskRequest,
+  updateTaskSuccess,
+  updateTaskFailure,
 } from "../slices/taskSlice";
 
 function* handleFetchTasks(
@@ -55,7 +58,7 @@ function* handleFetchTaskByID(action: PayloadAction<{id:string; token:string}>):
   }
 }
 
-function* handleDeleteTaskByID(action: PayloadAction<{token: string; id: string;}>): Generator<unknown, void, Task>{
+function* handleDeleteTaskByID(action: PayloadAction<{token: string; id: string;}>): Generator<unknown, void, void>{
   try{
     const {id, token} = action.payload;
     yield call(taskService.deleteTask, id, token);
@@ -67,11 +70,25 @@ function* handleDeleteTaskByID(action: PayloadAction<{token: string; id: string;
   }
 }
 
+function* handleUpdateTask(
+  action: PayloadAction<{ id: string; changes: Partial<Task>; token?: string }>
+): Generator<unknown, void, Task> {
+  try {
+    const { id, changes, token } = action.payload;
+    const updatedTask: Task = yield call(taskService.updateTask, id, changes, token);
+    yield put(updateTaskSuccess(updatedTask));
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Failed to update task";
+    yield put(updateTaskFailure(errorMessage));
+  }
+}
+
 export function* watchTaskSaga() {
   yield all([
     takeLatest(fetchTasksRequest.type, handleFetchTasks),
     takeLatest(createTaskRequest.type, handleCreateTask),
     takeLatest(fetchTaskByIDRequest.type, handleFetchTaskByID),
-    takeLatest(deleteTaskRequest.type, handleDeleteTaskByID)
+    takeLatest(deleteTaskRequest.type, handleDeleteTaskByID),
+    takeLatest(updateTaskRequest.type, handleUpdateTask),
   ]);
 }

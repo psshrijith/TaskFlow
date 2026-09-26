@@ -7,7 +7,7 @@ import TaskContent from "./TaskContent";
 import TaskHeader from "./TaskHeader";
 import TaskProperties from "./TaskProperties";
 import type { AppDispatch, RootState } from "../../store";
-import { fetchTaskByIDRequest } from "../../store/slices/taskSlice";
+import { fetchTaskByIDRequest, updateTaskRequest } from "../../store/slices/taskSlice";
 import Loader from "../Loader";
 
 type EditState = {
@@ -90,6 +90,14 @@ const TaskDetails = () => {
       }));
       return;
     }
+
+    dispatch(
+      updateTaskRequest({
+        id: editedTask.id,
+        changes: editedTask,
+        token: token || undefined,
+      })
+    );
 
     setEditState({ isEditing: false, draftTask: null, titleError: "" });
   };

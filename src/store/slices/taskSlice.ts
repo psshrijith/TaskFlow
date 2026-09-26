@@ -72,6 +72,25 @@ const taskSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    updateTaskRequest: (
+      state,
+      action: PayloadAction<{ id: string; changes: Partial<Task>; token?: string }>
+    ) => {
+      void action;
+      state.isLoading = true;
+      state.error = null;
+    },
+    updateTaskSuccess: (state, action: PayloadAction<Task>) => {
+      state.isLoading = false;
+      const index = state.tasks.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state.tasks[index] = action.payload;
+      }
+    },
+    updateTaskFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -89,6 +108,9 @@ export const {
   deleteTaskRequest,
   deleteTaskSuccess,
   deleteTaskFailure,
+  updateTaskRequest,
+  updateTaskSuccess,
+  updateTaskFailure,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;
