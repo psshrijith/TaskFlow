@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearAuthError, signupRequest } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 import validatePassword from "../utils/validatePassword";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Signup = () => {
   const intl = useIntl();
@@ -20,6 +22,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignUp = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -224,16 +227,26 @@ const Signup = () => {
                     </span>
                   </div>
 
-                  <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    placeholder="••••••••"
-                    className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
-                    required
-                    minLength={6}
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? "text": "password"}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="••••••••"
+                      className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
+                      required
+                      minLength={6}
+                    />
+
+                    <button 
+                        className="absolute top-1/2 right-3 -translate-y-1/2 disabled:cursor-not-allowed disabled:text-zinc-200"
+                        onClick={()=> setShowPassword((prev)=> !prev)} 
+                        disabled={password.length===0}
+                      >
+                        {showPassword ? <FontAwesomeIcon icon={faEye}/> : <FontAwesomeIcon icon={faEyeSlash}/>}
+                    </button>
+                  </div>
                 </div>
 
                 <button
