@@ -1,16 +1,20 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
-
-interface FormInput{
-  email : string;
+interface FormInput {
+  email: string;
   password: string;
   setEmail?: (value: string) => void;
   setPassword?: (value: string) => void;
 }
 
-const FormInput = ({email, password, setEmail, setPassword}:FormInput) => {
+const FormInput = ({ email, password, setEmail, setPassword }: FormInput) => {
   const intl = useIntl();
+  const [showPassword, setShowPassword] = useState(false);
+  
   return (
     <>
       <div>
@@ -45,16 +49,26 @@ const FormInput = ({email, password, setEmail, setPassword}:FormInput) => {
           </Link>
         </div>
 
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword?.(event.target.value)}
-          placeholder="••••••••"
-          autoComplete="current-password"
-          className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
-          required
-        />
+        <div className="relative">
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(event) => setPassword?.(event.target.value)}
+            placeholder="••••••••"
+            autoComplete="current-password"
+            className="w-full rounded-xl border border-zinc-200 px-4 py-3.5 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100"
+            required
+          />
+
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 -translate-y-1/2"
+            onClick={()=> setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash}/>}
+          </button>
+        </div>
       </div>
     </>
   );
