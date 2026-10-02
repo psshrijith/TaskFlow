@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { FormattedMessage } from "react-intl";
 
 const LandingPage = () => {
+
+    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen w-full bg-linear-to-b from-black via-zinc-950 to-zinc-900 text-white">
@@ -28,14 +31,9 @@ const LandingPage = () => {
                     <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                         <button
                             className="rounded-xl bg-white px-7 py-3.5 font-semibold text-black shadow-lg transition hover:-translate-y-0.5 hover:bg-zinc-200"
+                            onClick={()=> navigate('/signup')}
                         >
                             <FormattedMessage id="landing.primaryCta" />
-                        </button>
-
-                        <button
-                            className="rounded-xl border border-white/15 bg-white/5 px-7 py-3.5 font-semibold text-white backdrop-blur transition hover:bg-white/10"
-                        >
-                            <FormattedMessage id="landing.secondaryCta" />
                         </button>
                     </div>
 
