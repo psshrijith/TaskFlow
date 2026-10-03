@@ -98,11 +98,32 @@ export const authService = {
       },
       body: JSON.stringify({
         email,
+        options: {
+          redirectTo: `${window.location.origin}/reset-password`,
+        },
       }),
     });
 
     const data = await response.json();
     if (!response.ok) throw new Error(data.error_description || data.msg || "Failed to send reset link");
+    return data;
+  },
+
+  async updatePassword(password: string, accessToken: string) {
+    const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        password,
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error_description || data.msg || "Failed to update password");
     return data;
   },
 };
