@@ -88,4 +88,21 @@ export const authService = {
     if (!response.ok) throw new Error(data.error_description || data.msg || "Failed to fetch user");
     return data;
   },
+
+  async resetPassword(email: string) {
+    const response = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error_description || data.msg || "Failed to send reset link");
+    return data;
+  },
 };

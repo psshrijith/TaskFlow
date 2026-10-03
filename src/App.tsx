@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
 import Signup from "./Pages/SignUp";
 import Signin from "./Pages/SignIn";
+import ForgotPassword from "./Pages/ForgotPassword";
 import Dashboard from "./Pages/Dashboard";
 import Settings from "./Pages/Settings";
 import TaskDetails from "./components/TaskDetails";
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Signin />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>
